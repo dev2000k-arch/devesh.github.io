@@ -155,7 +155,13 @@
       border-radius: 8px;
       transition: border-color .3s;
     }
-    .project-card:hover { border-color: var(--accent); background: var(--surface2); }
+     a .project-card {
+      transition: border-color .3s, background .3s;
+    }
+     a:hover .project-card {
+      border-color: var(--accent);
+      background: var(--surface2);
+    }
     .project-card h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 500; margin-bottom: .5rem; }
     .project-tag { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--accent2); margin-bottom: .75rem; letter-spacing: .08em; }
     .project-card p { font-size: .85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
@@ -308,7 +314,7 @@
       <p>Orchestrated cross-functional ramp-up sales for new merchandise across EU, aligning finance, supply chain, and marketing.</p>
       <div class="project-outcome">Outcome: 45% increase in post-launch sales velocity</div>
     </div>
-  <a href="https://github.com/dev2000k-arch/devesh.github.io/blob/3c6c109afa1bd5ab71ff02ff5dd25876645234ab/theme-dashboard-case-study.html" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; display: block;">
+  <a href="https://dev2000k-arch.github.io/devesh.github.io/theme-dashboard-case-study.html" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; display: block;">
   <div class="project-card">
     <div class="project-tag">// DATA ANALYTICS</div>
     <h3>Automated Reporting Engine</h3>
