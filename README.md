@@ -1,238 +1,399 @@
 # devesh.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devesh Kashyap · Business Analyst & Vendor Manager</title>
+  <!-- Google Fonts: Same as theme dashboard -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== DARK THEME FROM DASHBOARD ===== */
+    :root {
+      --bg: #0c0f0a;
+      --surface: #141810;
+      --surface2: #1a1f16;
+      --border: rgba(255,255,255,0.07);
+      --accent: #b8f07c;
+      --accent2: #7cd4f0;
+      --accent3: #f0bc7c;
+      --accent4: #f07cb8;
+      --text: #e8ead4;
+      --muted: rgba(232,234,212,0.5);
+      --faint: rgba(232,234,212,0.15);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    /* animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.2s; }
+    .fade-up-3 { animation-delay: 0.35s; }
+    .fade-up-4 { animation-delay: 0.5s; }
+    
+    /* navigation */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(12,15,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing: .08em; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--muted); text-decoration: none; letter-spacing: .05em; transition: color .2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-tag { font-family: 'Space Mono', monospace; font-size: .65rem; padding: 4px 10px; border: 1px solid var(--accent); color: var(--accent); border-radius: 100px; }
+    
+    /* sections */
+    section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Space Mono', monospace; font-size: .68rem; color: var(--accent);
+      letter-spacing: .15em; text-transform: uppercase;
+      margin-bottom: 1rem; display: flex; align-items: center; gap: .75rem;
+    }
+    .section-label::before { content: ''; width: 28px; height: 1px; background: var(--accent); display: block; }
+    .section-title {
+      font-family: 'Fraunces', serif; font-size: clamp(1.8rem,4vw,2.8rem);
+      font-weight: 500; margin-bottom: 1.5rem; line-height: 1.15;
+    }
+    .section-body { color: var(--muted); max-width: 680px; line-height: 1.9; }
+    .divider { width: 100%; height: 1px; background: var(--border); }
+    
+    /* hero */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8rem 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(184,240,124,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,240,124,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace; font-size: .72rem;
+      color: var(--accent); letter-spacing: .15em;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--accent); display: block; }
+    .hero-title {
+      font-family: 'Fraunces', serif; font-size: clamp(2.8rem,7vw,5rem);
+      font-weight: 500; line-height: 1.05; margin-bottom: 1.5rem;
+      max-width: 820px;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-subtitle {
+      font-size: 1rem; color: var(--muted); max-width: 560px;
+      margin-bottom: 3rem; line-height: 1.8;
+    }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+    .meta-item {
+      display: flex; flex-direction: column; gap: 2px;
+      padding: .75rem 1.25rem;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--surface);
+    }
+    .meta-label { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+    .meta-val { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--text); }
+    .hero-kpis { display: flex; flex-wrap: wrap; gap: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .kpi { display: flex; flex-direction: column; }
+    .kpi-num { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 500; line-height: 1; color: var(--accent); }
+    .kpi-label { font-family: 'Space Mono', monospace; font-size: .65rem; color: var(--muted); margin-top: .25rem; letter-spacing: .06em; }
+    
+    /* about grid */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+    .about-text p { margin-bottom: 1rem; color: var(--muted); }
+    .about-image {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .about-image img { width: 100%; height: auto; display: block; }
+    
+    /* projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .project-card {
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      transition: border-color .3s;
+    }
+    .project-card:hover { border-color: var(--accent); background: var(--surface2); }
+    .project-card h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 500; margin-bottom: .5rem; }
+    .project-tag { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--accent2); margin-bottom: .75rem; letter-spacing: .08em; }
+    .project-card p { font-size: .85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .project-outcome { font-size: .8rem; color: var(--accent); border-top: 1px solid var(--border); padding-top: .75rem; margin-top: .5rem; }
+    
+    /* stats row */
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item { text-align: center; flex: 1; }
+    .stat-number { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 500; color: var(--accent); }
+    .stat-label { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--muted); margin-top: .25rem; }
+    
+    /* case studies */
+    .case-studies { margin-top: 2rem; }
+    .case-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .case-title { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 500; margin-bottom: .5rem; }
+    .case-desc { font-size: .85rem; color: var(--muted); margin-bottom: .5rem; }
+    .case-result { font-size: .8rem; color: var(--accent2); }
+    
+    /* contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .contact-info p { margin-bottom: .5rem; color: var(--muted); }
+    .contact-email, .contact-linkedin {
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      color: var(--accent);
+      word-break: break-all;
+    }
+    
+    /* footer */
+    footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      color: var(--muted);
+    }
+    .footer-tag { color: var(--accent); }
+    
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+      .case-item { grid-template-columns: 1fr; gap: 0.75rem; }
+      .stats-row { flex-direction: column; align-items: center; gap: 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;color:var(--color-text-primary);background:transparent}
-.port{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
-.hero{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;padding:2.5rem 2rem;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:1.5rem}
-.hero-name{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1.1;margin-bottom:.5rem}
-.hero-title{font-size:1rem;font-weight:500;color:var(--color-text-info);margin-bottom:.75rem;letter-spacing:.04em}
-.hero-bio{font-size:.9rem;color:var(--color-text-secondary);line-height:1.7;max-width:480px;margin-bottom:1.25rem}
-.hero-tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag{font-size:.75rem;padding:4px 12px;border-radius:100px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
-.avatar{width:100px;height:100px;border-radius:50%;background:#185FA5;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:2rem;color:#E6F1FB;flex-shrink:0}
-.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
-.m-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center}
-.m-num{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--color-text-primary);display:block}
-.m-label{font-size:.75rem;color:var(--color-text-secondary);margin-top:4px;display:block}
-.sec-title{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:0.5px solid var(--color-border-tertiary)}
-.sec{margin-bottom:2rem}
-.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.case-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;display:flex;flex-direction:column}
-.case-tag{font-size:.7rem;font-weight:500;padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:.75rem;width:fit-content}
-.tag-pm{background:#E6F1FB;color:#0C447C}
-.tag-ba{background:#EAF3DE;color:#27500A}
-.tag-data{background:#FAEEDA;color:#633806}
-.case-title{font-family:'DM Serif Display',serif;font-size:1.05rem;margin-bottom:.5rem;line-height:1.3}
-.case-prob{font-size:.82rem;color:var(--color-text-secondary);margin-bottom:.75rem;line-height:1.6}
-.star-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.75rem}
-.star-item{font-size:.75rem;padding:6px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
-.star-label{font-weight:500;color:var(--color-text-secondary);display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
-.star-val{color:var(--color-text-primary)}
-.impact-pill{margin-top:auto;padding-top:.75rem;border-top:0.5px solid var(--color-border-tertiary)}
-.impact-num{font-family:'DM Serif Display',serif;font-size:1.4rem;color:#185FA5}
-.impact-desc{font-size:.75rem;color:var(--color-text-secondary);margin-top:2px}
-.artefacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem}
-.art-chip{font-size:.7rem;padding:3px 9px;border:0.5px solid var(--color-border-tertiary);border-radius:100px;color:var(--color-text-secondary)}
-.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.skill-group{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
-.sg-title{font-size:.8rem;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
-.skill-pill{font-size:.78rem;padding:5px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:inline-block;margin:3px 3px 3px 0;color:var(--color-text-primary)}
-.cert-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.cert-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;display:flex;align-items:center;gap:.75rem}
-.cert-icon{width:36px;height:36px;border-radius:var(--border-radius-md);background:#E6F1FB;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cert-name{font-size:.82rem;font-weight:500;line-height:1.3}
-.cert-body{font-size:.72rem;color:var(--color-text-secondary);margin-top:2px}
-.contact-bar{display:flex;gap:1rem;align-items:center;padding:1.5rem 2rem;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);flex-wrap:wrap}
-.contact-item{font-size:.85rem;color:var(--color-text-info);text-decoration:none;display:flex;align-items:center;gap:6px}
-.resume-btn{margin-left:auto;font-size:.82rem;font-weight:500;padding:8px 20px;background:#185FA5;color:#E6F1FB;border:none;border-radius:var(--border-radius-md);cursor:pointer}
-.dot{width:4px;height:4px;border-radius:50%;background:var(--color-border-secondary);flex-shrink:0}
-@media(max-width:600px){
-.case-grid,.skills-grid,.cert-row,.metrics-row{grid-template-columns:1fr}
-.hero{grid-template-columns:1fr;text-align:center}.hero-tags{justify-content:center}.avatar{margin:0 auto}
-}
-</style>
-<div class="port">
-  <div class="hero">
-    <div>
-      <div style="font-size:.75rem;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">Portfolio · Business Analyst & Product Manager</div>
-      <div class="hero-name">Alex Morgan</div>
-      <div class="hero-title">Senior BA / Associate PM · Open to new opportunities</div>
-      <p class="hero-bio">Results-driven Business Analyst and Product Manager with 5+ years delivering digital transformation, data-driven insights, and customer-centric product experiences. Expert in bridging business needs and technical teams to ship products that matter.</p>
-      <div class="hero-tags">
-        <span class="tag">Agile / Scrum</span>
-        <span class="tag">Product Roadmaps</span>
-        <span class="tag">SQL & Power BI</span>
-        <span class="tag">Stakeholder Management</span>
-        <span class="tag">User Story Mapping</span>
-        <span class="tag">JIRA · Confluence</span>
+<nav>
+  <div class="nav-brand">// portfolio · Devesh Kashyap</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#case-studies">Case Studies</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-tag">BA · Vendor Manager</div>
+</nav>
+
+<!-- HERO SECTION (matching dashboard style) -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow fade-up fade-up-1">Business Analyst · Amazon</div>
+  <h1 class="hero-title fade-up fade-up-2">
+    Devesh Kashyap<br/>
+    <em>Driving growth</em> through data & strategy
+  </h1>
+  <p class="hero-subtitle fade-up fade-up-3">
+    Business Development Manager & Vendor Manager with expertise in e-commerce analytics, 
+    product launches, and cross-functional leadership. Based in London.
+  </p>
+  <div class="hero-meta fade-up fade-up-4">
+    <div class="meta-item"><span class="meta-label">Role</span><span class="meta-val">Vendor Manager I</span></div>
+    <div class="meta-item"><span class="meta-label">Platform</span><span class="meta-val">Amazon (Consumables)</span></div>
+    <div class="meta-item"><span class="meta-label">Markets</span><span class="meta-val">Pan-EU (5+ countries)</span></div>
+    <div class="meta-item"><span class="meta-label">P&L Ownership</span><span class="meta-val">$23M+ (2025)</span></div>
+  </div>
+  <div class="hero-kpis fade-up fade-up-4">
+    <div class="kpi"><span class="kpi-num">5+</span><span class="kpi-label">Strategic Markets</span></div>
+    <div class="kpi"><span class="kpi-num">$23.1M</span><span class="kpi-label">Projected Revenue</span></div>
+    <div class="kpi"><span class="kpi-num">95%</span><span class="kpi-label">Partner Retention</span></div>
+    <div class="kpi"><span class="kpi-num">10+</span><span class="kpi-label">Cross-functional Teams</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+  <div class="section-label">01 · About Me</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I majored in International Business at the University of Greenwich (MBA). My passion for analytics led me to e-commerce platforms like Amazon, where I started as a Business Analyst focusing on customer experience, products, and growth.</p>
+      <p>At Amazon Merch on Demand, I created the first automated reporting tool for EU, helping Program Managers, Account Managers & Supply-chain teams understand customer behavior — unlocking $16M+ in opportunities. I also led post-launch ramp-up sales for new fashion products, collaborating with finance, supply chain, tech, and marketing.</p>
+      <p>Currently, as Vendor Manager I at Amazon Consumables, I manage a portfolio of COTY & Interparfums (12+ brands) across Pan-EU, driving NPD launches, marketplace expansion, and delivering P&L growth of $23M+ for 2025.</p>
+      <p>Outside work, you'll find me bouldering or binge-watching the latest series on Netflix.</p>
+    </div>
+    <div class="about-image">
+      <!-- Placeholder image (same as original) - using a neutral shape -->
+      <div style="background: var(--surface2); height: 300px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 12px;">
+        <span style="font-family: 'Space Mono'; color: var(--muted);">Devesh Kashyap</span>
       </div>
     </div>
-    <div class="avatar">AM</div>
   </div>
+</section>
 
-  <div class="metrics-row">
-    <div class="m-card"><span class="m-num">5+</span><span class="m-label">Years experience</span></div>
-    <div class="m-card"><span class="m-num">12</span><span class="m-label">Projects delivered</span></div>
-    <div class="m-card"><span class="m-num">£2.4M</span><span class="m-label">Value generated</span></div>
-    <div class="m-card"><span class="m-num">94%</span><span class="m-label">Stakeholder sat.</span></div>
-  </div>
+<div class="divider"></div>
 
-  <div class="sec">
-    <div class="sec-title">Case studies</div>
-    <div class="case-grid">
-
-      <div class="case-card">
-        <span class="case-tag tag-pm">Product Management</span>
-        <div class="case-title">Customer Onboarding Portal Redesign</div>
-        <p class="case-prob">Legacy portal drove 35% drop-off rate causing £600K annual churn. Tasked with full product discovery to launch.</p>
-        <div class="star-row">
-          <div class="star-item"><span class="star-label">Situation</span><span class="star-val">35% user drop-off, high support costs</span></div>
-          <div class="star-item"><span class="star-label">Task</span><span class="star-val">Own discovery, prioritisation & roadmap</span></div>
-          <div class="star-item"><span class="star-label">Action</span><span class="star-val">User interviews, journey mapping, MVP scoping</span></div>
-          <div class="star-item"><span class="star-label">Result</span><span class="star-val">Launched in 3 sprints, measurable uplift</span></div>
-        </div>
-        <div class="artefacts">
-          <span class="art-chip">PRD</span><span class="art-chip">Figma Prototype</span><span class="art-chip">Roadmap</span><span class="art-chip">OKRs</span>
-        </div>
-        <div class="impact-pill">
-          <div class="impact-num">-40% drop-off</div>
-          <div class="impact-desc">Onboarding completion rate up to 91% within 60 days of launch</div>
-        </div>
-      </div>
-
-      <div class="case-card">
-        <span class="case-tag tag-ba">Business Analysis</span>
-        <div class="case-title">Supply Chain Process Re-engineering</div>
-        <p class="case-prob">Manual procurement process causing 3-day delays and data inconsistencies across 4 regional teams.</p>
-        <div class="star-row">
-          <div class="star-item"><span class="star-label">Situation</span><span class="star-val">Manual, error-prone procurement workflow</span></div>
-          <div class="star-item"><span class="star-label">Task</span><span class="star-val">Document AS-IS, design TO-BE process</span></div>
-          <div class="star-item"><span class="star-label">Action</span><span class="star-val">Swimlane mapping, requirements, UAT</span></div>
-          <div class="star-item"><span class="star-label">Result</span><span class="star-val">Automated end-to-end, £380K saved/yr</span></div>
-        </div>
-        <div class="artefacts">
-          <span class="art-chip">BRD</span><span class="art-chip">Swimlane Diagram</span><span class="art-chip">UAT Plan</span><span class="art-chip">Gap Analysis</span>
-        </div>
-        <div class="impact-pill">
-          <div class="impact-num">£380K saved/yr</div>
-          <div class="impact-desc">Cycle time reduced from 72hrs to 8hrs across all regions</div>
-        </div>
-      </div>
-
-      <div class="case-card">
-        <span class="case-tag tag-data">Data & Analytics</span>
-        <div class="case-title">Executive KPI Dashboard — Power BI</div>
-        <p class="case-prob">C-suite relied on weekly Excel reports compiled manually, leading to 2-day data lag in strategic decisions.</p>
-        <div class="star-row">
-          <div class="star-item"><span class="star-label">Situation</span><span class="star-val">No real-time visibility for leadership team</span></div>
-          <div class="star-item"><span class="star-label">Task</span><span class="star-val">Define KPIs, design self-serve dashboard</span></div>
-          <div class="star-item"><span class="star-label">Action</span><span class="star-val">SQL data model, Power BI, stakeholder workshops</span></div>
-          <div class="star-item"><span class="star-label">Result</span><span class="star-val">Live data for 200+ users, 0 manual reports</span></div>
-        </div>
-        <div class="artefacts">
-          <span class="art-chip">SQL Model</span><span class="art-chip">Power BI</span><span class="art-chip">KPI Framework</span><span class="art-chip">Data Dictionary</span>
-        </div>
-        <div class="impact-pill">
-          <div class="impact-num">200+ users</div>
-          <div class="impact-desc">Eliminated 8hrs/week of manual reporting; real-time data latency</div>
-        </div>
-      </div>
-
-      <div class="case-card">
-        <span class="case-tag tag-pm">Product Management</span>
-        <div class="case-title">B2B SaaS Feature Prioritisation & Launch</div>
-        <p class="case-prob">Product backlog had 200+ items with no clear priority framework. Engineering team blocked by conflicting stakeholder demands.</p>
-        <div class="star-row">
-          <div class="star-item"><span class="star-label">Situation</span><span class="star-val">Unranked backlog, no delivery cadence</span></div>
-          <div class="star-item"><span class="star-label">Task</span><span class="star-val">Build prioritisation framework & quarterly plan</span></div>
-          <div class="star-item"><span class="star-label">Action</span><span class="star-val">RICE scoring, MoSCoW, sprint ceremonies</span></div>
-          <div class="star-item"><span class="star-label">Result</span><span class="star-val">3 features shipped, NPS +22 points</span></div>
-        </div>
-        <div class="artefacts">
-          <span class="art-chip">Roadmap</span><span class="art-chip">RICE Matrix</span><span class="art-chip">User Stories</span><span class="art-chip">Release Notes</span>
-        </div>
-        <div class="impact-pill">
-          <div class="impact-num">NPS +22 pts</div>
-          <div class="impact-desc">3 high-value features shipped in Q3; velocity up 30%</div>
-        </div>
-      </div>
-
+<!-- PROJECTS SECTION -->
+<section id="projects">
+  <div class="section-label">02 · Key Projects</div>
+  <h2 class="section-title">Delivering impact across e-commerce & analytics</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-tag">// VENDOR MANAGEMENT</div>
+      <h3>EU Marketplace Expansion</h3>
+      <p>Scaling Interparfums portfolio across Pan-EU marketplaces through strategic vendor negotiations and localization.</p>
+      <div class="project-outcome">Outcome: Projected P&L growth of $23M+ for 2025</div>
+    </div>
+    <div class="project-card">
+      <div class="project-tag">// PRODUCT STRATEGY</div>
+      <h3>NPD Fashion Post-Launch</h3>
+      <p>Orchestrated cross-functional ramp-up sales for new merchandise across EU, aligning finance, supply chain, and marketing.</p>
+      <div class="project-outcome">Outcome: 45% increase in post-launch sales velocity</div>
+    </div>
+    <div class="project-card">
+      <div class="project-tag">// DATA ANALYTICS</div>
+      <h3>Automated Reporting Engine</h3>
+      <p>Developed SQL-based reporting to identify customer behavior shifts, replacing manual processes for retail managers.</p>
+      <div class="project-outcome">Outcome: Identified $16M+ in untapped business opportunities</div>
+    </div>
+    <div class="project-card">
+      <div class="project-tag">// PROMOTIONAL STRATEGY</div>
+      <h3>High-Impact Campaigns</h3>
+      <p>Designed and executed promotional campaigns with partners, aligned with SPMs, Ads & Finance teams.</p>
+      <div class="project-outcome">Outcome: +68% deal conversion, +$6.2M in OPS, +48% Net PPM</div>
     </div>
   </div>
+</section>
 
-  <div class="sec">
-    <div class="sec-title">Skills & tools</div>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <div class="sg-title">BA Methods</div>
-        <span class="skill-pill">Requirements Elicitation</span>
-        <span class="skill-pill">BRD / FRD Writing</span>
-        <span class="skill-pill">Gap Analysis</span>
-        <span class="skill-pill">Process Mapping</span>
-        <span class="skill-pill">UAT Planning</span>
-        <span class="skill-pill">Use Case Modelling</span>
+<div class="divider"></div>
+
+<!-- STATS ROW (matching dashboard KPI style) -->
+<div class="stats-row" style="max-width: 1200px; margin: 0 auto; padding: 2rem 4rem;">
+  <div class="stat-item"><div class="stat-number">5+</div><div class="stat-label">Strategic Markets</div></div>
+  <div class="stat-item"><div class="stat-number">$23.1M</div><div class="stat-label">New Revenue Generated</div></div>
+  <div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Client Partnership Retention</div></div>
+</div>
+
+<!-- CASE STUDIES SECTION (matching dashboard style) -->
+<section id="case-studies">
+  <div class="section-label">03 · Case Studies</div>
+  <h2 class="section-title">Real-world impact, measurable results</h2>
+  <div class="case-studies">
+    <div class="case-item">
+      <div>
+        <div class="case-title">Luxury Perfume Portfolio Expansion</div>
+        <div class="case-desc">Stagnant market penetration for high-end fragrances in secondary EU marketplaces due to localization gaps. Leveraged Amazon's Pan-EU program to synchronize stock across 5 regions while optimizing A+ content for local search trends.</div>
+        <div class="case-result">✓ 112% increase in year-over-year revenue across non-UK markets</div>
       </div>
-      <div class="skill-group">
-        <div class="sg-title">PM Methods</div>
-        <span class="skill-pill">Agile / Scrum</span>
-        <span class="skill-pill">Product Roadmaps</span>
-        <span class="skill-pill">OKR Framework</span>
-        <span class="skill-pill">RICE / MoSCoW</span>
-        <span class="skill-pill">User Story Mapping</span>
-        <span class="skill-pill">A/B Testing</span>
+      <div>
+        <div class="case-title">Automated Vendor Performance Metrics</div>
+        <div class="case-desc">Monthly reporting took 40+ manual hours per analyst. Engineered a custom SQL script and R-based dashboard that automated data extraction from Vendor Central.</div>
+        <div class="case-result">✓ Reduced reporting time by 92% and identified £500k in lost buy-box opportunities</div>
       </div>
-      <div class="skill-group">
-        <div class="sg-title">Tools & tech</div>
-        <span class="skill-pill">JIRA & Confluence</span>
-        <span class="skill-pill">Figma</span>
-        <span class="skill-pill">Power BI</span>
-        <span class="skill-pill">SQL</span>
-        <span class="skill-pill">Miro</span>
-        <span class="skill-pill">Excel / Sheets</span>
-        <span class="skill-pill">Salesforce</span>
+    </div>
+    <div class="case-item">
+      <div>
+        <div class="case-title">Post-Brexit Supply Chain Optimization</div>
+        <div class="case-desc">Increased lead times and customs delays causing out-of-stock rates up to 15%. Diversified logistics partners and implemented an agile predictive stocking model.</div>
+        <div class="case-result">✓ Restored in-stock availability to 99% and decreased logistical overhead by 12%</div>
+      </div>
+      <div>
+        <div class="case-title">EU Merch Theme Dashboard</div>
+        <div class="case-desc">Designed end-to-end QuickSight dashboard tracking 49 seasonal themes across 5 EU marketplaces, enabling year-on-year performance comparison.</div>
+        <div class="case-result">✓ Tracked £21.7M in event revenue, replaced ad-hoc queries with self-serve analytics</div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="sec">
-    <div class="sec-title">Certifications</div>
-    <div class="cert-row">
-      <div class="cert-card">
-        <div class="cert-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#185FA5" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div><div class="cert-name">CBAP — Certified BA Professional</div><div class="cert-body">IIBA · 2023</div></div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#185FA5" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div><div class="cert-name">Professional Scrum Master I</div><div class="cert-body">Scrum.org · 2022</div></div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#185FA5" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div><div class="cert-name">Google PM Certificate</div><div class="cert-body">Coursera · 2023</div></div>
-      </div>
+<div class="divider"></div>
+
+<!-- CONTACT SECTION -->
+<section id="contact">
+  <div class="section-label">04 · Get In Touch</div>
+  <h2 class="section-title">Let's drive growth together</h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Based in London, I'm available for global business development and analytics opportunities.</p>
+      <p style="margin-top: 1rem;">Email:</p>
+      <div class="contact-email">dev2000k@gmail.com</div>
+      <p style="margin-top: 1rem;">LinkedIn:</p>
+      <div class="contact-linkedin">https://www.linkedin.com/in/devesh-kashyap-17b37b1b3/</div>
+    </div>
+    <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; background: var(--surface);">
+      <p style="font-family: 'Space Mono'; font-size: .75rem; color: var(--accent); margin-bottom: 1rem;">// Quick connect</p>
+      <p style="font-size: .85rem; color: var(--muted);">Let's discuss how we can collaborate on strategic e-commerce initiatives, product launches, or data-driven growth projects.</p>
     </div>
   </div>
+</section>
 
-  <div class="contact-bar">
-    <a class="contact-item" href="#">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
-      linkedin.com/in/alexmorgan
-    </a>
-    <div class="dot"></div>
-    <a class="contact-item" href="#">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/></svg>
-      alex.morgan@email.com
-    </a>
-    <div class="dot"></div>
-    <a class="contact-item" href="#">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+<footer>
+  <div><span class="footer-tag">// portfolio</span> · Devesh Kashyap · Business Analyst & Vendor Manager</div>
+  <div style="color: var(--muted); font-size: .6rem;">© 2025 · Built with data-driven precision</div>
+</footer>
+
+</body>
+</html>
+
       github.com/alexmorgan
     </a>
     <button class="resume-btn" onclick="sendPrompt('Help me create a PDF version of this portfolio')">Download CV ↗</button>
