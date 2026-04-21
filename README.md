@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -245,7 +245,7 @@
 <!-- HERO SECTION (matching dashboard style) -->
 <div class="hero">
   <div class="hero-grid-bg"></div>
-  <div class="hero-eyebrow fade-up fade-up-1">Business Analyst · Vendor Manager · Amazon</div>
+  <div class="hero-eyebrow fade-up fade-up-1">Business Analyst · Amazon</div>
   <h1 class="hero-title fade-up fade-up-2">
     Devesh Kashyap<br/>
     <em>Driving growth</em> through data & strategy
@@ -392,5 +392,3 @@
 
 </body>
 </html>
-
-  
