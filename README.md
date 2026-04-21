@@ -393,8 +393,4 @@
 </body>
 </html>
 
-      github.com/alexmorgan
-    </a>
-    <button class="resume-btn" onclick="sendPrompt('Help me create a PDF version of this portfolio')">Download CV ↗</button>
-  </div>
-</div>
+  
