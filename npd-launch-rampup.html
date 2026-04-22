@@ -573,24 +573,107 @@
       <div class="stock-card">
         <div class="stock-label">VARIANT 002 — BLACK</div>
         <div class="stock-num rimmel">7,000</div>
-        <div class="stock-desc">Units allocated · ASIN B0FH2SYXX2 · £5.63 unit cost · 70% of total launch stock</div>
+        <div class="stock-desc">Units allocated · ASIN B0FH2SYXX2 · 70% of total launch stock</div>
       </div>
       <div class="stock-card">
         <div class="stock-label">VARIANT 001 — BROWN</div>
         <div class="stock-num rimmel">3,000</div>
-        <div class="stock-desc">Units allocated · ASIN B0FH2NZ2YJ · £5.63 unit cost · 30% of total launch stock</div>
+        <div class="stock-desc">Units allocated · ASIN B0FH2NZ2YJ · 30% of total launch stock</div>
       </div>
       <div class="stock-card">
         <div class="stock-label">TOTAL LAUNCH VALUE</div>
         <div class="stock-num green">£56.3K</div>
-        <div class="stock-desc">Total inventory cost at £5.63 per unit · Vendor code HFCPV · Planning horizon Jan 18 - Mar 21, 2025</div>
+        <div class="stock-desc">Total inventory cost at £156K · Planning horizon Oct 18 - Nov 10, 2025</div>
       </div>
     </div>
   </div>
 
   <!-- ASIN TABLE -->
+
+
+  
   <div class="asin-table-container">
-    <div style="font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:1.5rem;">// ASIN BREAKDOWN — LAUNCH INVENTORY</div>
+        <div style="font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:1.5rem;">
+        <h3>// Staggered Market Go-Live Schedule</h3> </div>
+        
+          <table class="asin-table">
+            <thead>
+              <tr>
+                <th>Market</th>
+                <th>Procurement Deadline</th>
+                <th>Amazon Go-Live</th>
+                <th>Aligned?</th>
+                <th>Media Go-Live</th>
+                <th>Go-Live Order</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UK (United Kingdom)</td>
+                <td>20th Oct 2025</td>
+                <td>7th Dec 2025</td>
+                <td class="status-y">Y</td>
+                <td>1st Dec</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>DE (Germany)</td>
+                <td>20th Oct 2025</td>
+                <td>7th Dec 2025</td>
+                <td class="status-y">Y</td>
+                <td>1st Dec</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>IT (Italy)</td>
+                <td>20th Oct 2025</td>
+                <td>7th Dec 2025</td>
+                <td class="status-y">Y</td>
+                <td>1st Dec</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>ES (Spain)</td>
+                <td>20th Oct 2025</td>
+                <td>7th Dec 2025</td>
+                <td class="status-y">Y</td>
+                <td>1st Dec</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>NL (Netherlands)</td>
+                <td>15th Sep 2025</td>
+                <td>15th Sep 2025</td>
+                <td class="status-y">Y</td>
+                <td>1st Oct</td>
+                <td>4</td>
+              </tr>
+            </tbody>
+          </table>
+        
+      </div>
+    
+
+    <div class="content-grid">
+      <div class="data-card">
+        <h3 style="color: var(--accent4);">Supply Chain Mechanics</h3>
+        <ul class="custom-list">
+          <li><span>→</span> <b>"NP" Order Types:</b> Utilized "Not yet published" (NP) Order Type codes via CMBS to force PO generation while keeping ASINs hidden from the front-end.</li>
+          <li><span>→</span> <b>Exception Coding:</b> Leveraged Reason Code <i>MB063 (New country launch)</i> and <i>MB075</i> to bypass standard forecast overrides.</li>
+          <li><span>→</span> <b>Pan-EU Distribution:</b> Directed initial Purchase Orders across key nodes (e.g., HAM2 in DE, XMA3 in IT) to ensure Prime eligibility on Day 1.</li>
+        </ul>
+      </div>
+      
+      <div class="data-card">
+        <h3 style="color: var(--accent2);">Retail Marketing Synergy</h3>
+        <ul class="custom-list">
+          <li><span>→</span> <b>Storefront Billboards:</b> Activated 1300x90px Hero Billboards on EU Beauty Homepage linked directly to the Rimmel brand store, synchronized with the Oct 1 Media push.</li>
+          <li><span>→</span> <b>Subscribe & Save (SnS):</b> Immediately enrolled Megalift ASINs into SnS with a 5% vendor-funded discount. Based on historical category data, SnS funding drives an average incremental revenue lift of >30%.</li>
+          <li><span>→</span> <b>Retention Funnel:</b> Capitalized on the statistic that SnS coupons generate a 19x ROI to lock in early adopters.</li>
+        </ul>
+      </div>
+    </div>
+   <!-- <div style="font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:1.5rem;">// ASIN BREAKDOWN — LAUNCH INVENTORY</div>
     <table class="asin-table">
       <thead>
         <tr>
@@ -627,7 +710,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div>-->
 </section>
 
 <div class="divider"></div>
