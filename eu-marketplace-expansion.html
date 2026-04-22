@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EU Marketplace Expansion · Portfolio Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0c0f0a;
+    --surface: #141810;
+    --surface2: #1a1f16;
+    --border: rgba(255,255,255,0.07);
+    --accent: #b8f07c;
+    --accent2: #7cd4f0;
+    --accent3: #f0bc7c;
+    --accent4: #f07cb8;
+    --text: #e8ead4;
+    --muted: rgba(232,234,212,0.5);
+    --faint: rgba(232,234,212,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+  @keyframes slideIn { from{transform:scaleX(0);} to{transform:scaleX(1);} }
+  @keyframes growMap { from{transform:scale(0.92);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .fade-up-1 { animation-delay: 0.1s; }
+  .fade-up-2 { animation-delay: 0.2s; }
+  .fade-up-3 { animation-delay: 0.35s; }
+  .fade-up-4 { animation-delay: 0.5s; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(12,15,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing:.08em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); text-decoration:none; letter-spacing:.05em; transition:color .2s; }
+  .nav-links a:hover { color:var(--accent); }
+  .nav-tag { font-family:'Space Mono',monospace; font-size:.65rem; padding:4px 10px; border:1px solid var(--accent); color:var(--accent); border-radius:100px; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(184,240,124,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,240,124,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events:none;
+  }
+  .hero-glow {
+    position:absolute; top:-200px; right:-100px;
+    width:600px; height:600px;
+    background: radial-gradient(circle, rgba(124,212,240,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eyebrow {
+    font-family:'Space Mono',monospace; font-size:.72rem;
+    color:var(--accent); letter-spacing:.15em;
+    margin-bottom:1.5rem;
+    display:flex; align-items:center; gap:.75rem;
+  }
+  .hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--accent); display:block; }
+  .hero-title {
+    font-family:'Fraunces',serif; font-size:clamp(2.8rem,7vw,5.5rem);
+    font-weight:500; line-height:1.05; margin-bottom:1.5rem;
+    max-width:900px;
+  }
+  .hero-title em { font-style:italic; color:var(--accent2); }
+  .hero-subtitle {
+    font-size:1rem; color:var(--muted); max-width:620px;
+    margin-bottom:3rem; line-height:1.8;
+  }
+  .hero-brands { display:flex; flex-wrap:wrap; gap:1.5rem; margin-bottom:3rem; }
+  .brand-pill {
+    padding:1rem 1.75rem; border:1px solid var(--border);
+    border-radius:8px; background:var(--surface);
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .brand-name { font-family:'Fraunces',serif; font-size:1.1rem; font-weight:500; color:var(--text); }
+  .brand-cat { font-family:'Space Mono',monospace; font-size:.6rem; color:var(--muted); letter-spacing:.1em; }
+  .hero-kpis { display:flex; flex-wrap:wrap; gap:2rem; padding-top:2rem; border-top:1px solid var(--border); }
+  .kpi { display:flex; flex-direction:column; }
+  .kpi-num { font-family:'Fraunces',serif; font-size:2.5rem; font-weight:500; line-height:1; color:var(--accent2); }
+  .kpi-label { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); margin-top:.25rem; letter-spacing:.06em; }
+
+  section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family:'Space Mono',monospace; font-size:.68rem; color:var(--accent);
+    letter-spacing:.15em; text-transform:uppercase;
+    margin-bottom:1rem; display:flex; align-items:center; gap:.75rem;
+  }
+  .section-label::before { content:''; width:28px; height:1px; background:var(--accent); display:block; }
+  .section-title {
+    font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,2.8rem);
+    font-weight:500; margin-bottom:1.5rem; line-height:1.15;
+  }
+  .section-body { color:var(--muted); max-width:680px; line-height:1.9; }
+
+  .divider { width:100%; height:1px; background:var(--border); }
+
+  /* EU MAP VISUAL */
+  .map-container {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:3rem; margin:3rem 0;
+    position:relative; overflow:hidden;
+  }
+  .map-title { font-family:'Space Mono',monospace; font-size:.68rem; color:var(--accent2); letter-spacing:.12em; margin-bottom:2rem; }
+  .map-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+  .map-vis {
+    position:relative; padding:2rem;
+    display:flex; align-items:center; justify-content:center;
+    min-height:400px;
+  }
+  .map-svg { width:100%; max-width:420px; animation:growMap .8s ease both; }
+  
+  .country-marker {
+    position:absolute;
+    width:12px; height:12px;
+    border-radius:50%;
+    border:2px solid var(--accent2);
+    background:rgba(124,212,240,0.3);
+    animation:pulse 2s infinite;
+  }
+  .country-marker.existing { border-color:var(--accent); background:rgba(184,240,124,0.3); }
+  
+  /* Approximate EU map positions (relative to container) */
+  .marker-uk { top:22%; left:8%; }
+  .marker-fr { top:42%; left:18%; }
+  .marker-de { top:35%; left:35%; }
+  .marker-it { top:55%; left:38%; }
+  .marker-es { top:58%; left:10%; }
+  .marker-nl { top:28%; left:28%; }
+  .marker-be { top:32%; left:25%; }
+  .marker-pl { top:30%; left:52%; }
+  .marker-se { top:12%; left:48%; }
+  .marker-ie { top:28%; left:4%; }
+  
+  .map-legend {
+    display:flex; flex-direction:column; gap:1.5rem;
+  }
+  .legend-group h3 { font-family:'Fraunces',serif; font-size:1rem; font-weight:500; margin-bottom:.75rem; }
+  .legend-items { display:flex; flex-direction:column; gap:.5rem; }
+  .legend-item {
+    display:flex; align-items:center; gap:.75rem;
+    padding:.5rem 0; font-size:.8rem; color:var(--muted);
+  }
+  .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .dot-existing { background:var(--accent); }
+  .dot-new { background:var(--accent2); }
+  .country-name { font-weight:500; color:var(--text); min-width:100px; }
+  .country-flag { font-size:1.1rem; margin-right:.25rem; }
+
+  /* BRAND EXPANSION CARDS */
+  .brand-expansion { margin:3rem 0; }
+  .exp-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+  .exp-card {
+    padding:2rem; border:1px solid var(--border);
+    background:var(--surface); border-radius:8px;
+    border-top:3px solid;
+  }
+  .exp-card.interparfums { border-top-color:var(--accent2); }
+  .exp-card.coty { border-top-color:var(--accent3); }
+  .exp-logo { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:500; margin-bottom:.75rem; }
+  .exp-card.interparfums .exp-logo { color:var(--accent2); }
+  .exp-card.coty .exp-logo { color:var(--accent3); }
+  .exp-cat { font-family:'Space Mono',monospace; font-size:.6rem; color:var(--muted); letter-spacing:.1em; margin-bottom:1.5rem; }
+  .exp-markets { display:flex; flex-direction:column; gap:.5rem; margin-bottom:1.5rem; }
+  .exp-market-item { display:flex; align-items:center; gap:.5rem; font-size:.82rem; }
+  .exp-market-item::before { content:'→'; color:var(--accent2); font-family:'Space Mono',monospace; font-size:.7rem; }
+  .exp-card.coty .exp-market-item::before { color:var(--accent3); }
+  .exp-timeline { margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--border); }
+  .timeline-label { font-family:'Space Mono',monospace; font-size:.6rem; color:var(--muted); letter-spacing:.1em; margin-bottom:.75rem; }
+  .timeline-items { display:flex; flex-direction:column; gap:.4rem; }
+  .timeline-item { font-size:.78rem; color:var(--muted); display:flex; align-items:flex-start; gap:.5rem; }
+  .timeline-item strong { color:var(--text); font-weight:500; }
+
+  /* METRICS */
+  .metrics-section { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:3rem; margin:3rem 0; }
+  .metrics-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:2rem; }
+  .metric-card {
+    padding:1.75rem 1.5rem; border:1px solid var(--border);
+    border-radius:8px; background:var(--bg);
+    text-align:center;
+  }
+  .metric-num { font-family:'Fraunces',serif; font-size:2.2rem; font-weight:500; line-height:1; margin-bottom:.25rem; }
+  .metric-num.green { color:var(--accent); }
+  .metric-num.blue { color:var(--accent2); }
+  .metric-num.amber { color:var(--accent3); }
+  .metric-label { font-family:'Space Mono',monospace; font-size:.62rem; color:var(--muted); line-height:1.5; }
+
+  /* TIMELINE */
+  .expansion-timeline { margin:3rem 0; }
+  .timeline-track { display:flex; gap:0; margin-top:2rem; overflow-x:auto; padding-bottom:1rem; }
+  .timeline-phase {
+    display:flex; flex-direction:column; align-items:center;
+    min-width:200px; flex:1;
+    position:relative;
+    padding:1.5rem 1rem;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:8px;
+  }
+  .timeline-phase:not(:last-child) { margin-right:1rem; }
+  .phase-quarter { font-family:'Space Mono',monospace; font-size:.62rem; color:var(--accent2); letter-spacing:.1em; margin-bottom:.5rem; }
+  .phase-title { font-size:.9rem; font-weight:500; text-align:center; margin-bottom:1rem; }
+  .phase-items { display:flex; flex-direction:column; gap:.35rem; width:100%; }
+  .phase-item { font-size:.72rem; color:var(--muted); display:flex; gap:.4rem; align-items:flex-start; }
+  .phase-item::before { content:'•'; color:var(--accent2); flex-shrink:0; }
+
+  /* CHALLENGES & SOLUTIONS */
+  .cs-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem; }
+  .cs-card {
+    padding:2rem; border:1px solid var(--border);
+    background:var(--surface); border-radius:8px;
+  }
+  .cs-icon { font-family:'Space Mono',monospace; font-size:1.5rem; margin-bottom:1rem; }
+  .cs-card.challenge .cs-icon { color:var(--accent3); }
+  .cs-card.solution .cs-icon { color:var(--accent); }
+  .cs-card h3 { font-family:'Fraunces',serif; font-size:1.1rem; font-weight:500; margin-bottom:1rem; }
+  .cs-list { display:flex; flex-direction:column; gap:.6rem; }
+  .cs-item { font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; align-items:flex-start; line-height:1.6; }
+  .cs-item::before { content:'→'; font-family:'Space Mono',monospace; font-size:.7rem; flex-shrink:0; margin-top:2px; }
+  .cs-card.challenge .cs-item::before { color:var(--accent3); }
+  .cs-card.solution .cs-item::before { color:var(--accent); }
+
+  /* IMPACT */
+  .impact-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; margin-top:2.5rem; }
+  .impact-card {
+    padding:2rem; border:1px solid var(--border);
+    border-radius:8px; background:var(--surface);
+  }
+  .impact-card h3 { font-family:'Space Mono',monospace; font-size:.68rem; color:var(--accent2); letter-spacing:.1em; margin-bottom:1rem; }
+  .impact-items { display:flex; flex-direction:column; gap:.6rem; }
+  .impact-item { font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; align-items:flex-start; line-height:1.7; }
+  .impact-item::before { content:'✓'; color:var(--accent); font-weight:500; flex-shrink:0; }
+
+  footer {
+    padding:3rem 4rem; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted);
+  }
+  .footer-tag { color:var(--accent); }
+
+  @media(max-width:768px){
+    .hero { padding:7rem 1.5rem 3rem; }
+    section { padding:4rem 1.5rem; }
+    .map-grid, .exp-grid, .cs-grid, .impact-grid { grid-template-columns:1fr; }
+    .metrics-grid { grid-template-columns:repeat(2,1fr); }
+    .timeline-track { flex-direction:column; }
+    .timeline-phase:not(:last-child) { margin-right:0; margin-bottom:1rem; }
+    nav { padding:1rem 1.5rem; }
+    .nav-links { display:none; }
+    footer { flex-direction:column; gap:1rem; padding:2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">// portfolio · case study</div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#expansion">Expansion</a>
+    <a href="#execution">Execution</a>
+    <a href="#impact">Impact</a>
+  </div>
+  <div class="nav-tag">Vendor Management · Expansion</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow fade-up fade-up-1">Project 02 · Marketplace Expansion</div>
+
+  <h1 class="hero-title fade-up fade-up-2">
+    EU Marketplace <em>Expansion</em><br/>— From EU5 to EU10
+  </h1>
+
+  <p class="hero-subtitle fade-up fade-up-3">
+    Led end-to-end marketplace expansion for Interparfums and COTY across 5 new European markets, driving €2.49M in incremental revenue through strategic vendor onboarding, profitability modeling, and cross-functional deal execution.
+  </p>
+
+  <div class="hero-brands fade-up fade-up-4">
+    <div class="brand-pill">
+      <span class="brand-name">Interparfums</span>
+      <span class="brand-cat">PRESTIGE BEAUTY · FRAGRANCE</span>
+    </div>
+    <div class="brand-pill">
+      <span class="brand-name">COTY</span>
+      <span class="brand-cat">GLOBAL BEAUTY · MAKEUP & FRAGRANCE</span>
+    </div>
+  </div>
+
+  <div class="hero-kpis fade-up fade-up-4">
+    <div class="kpi">
+      <span class="kpi-num">5</span>
+      <span class="kpi-label">New marketplaces</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">€2.49M</span>
+      <span class="kpi-label">YTD revenue (Interparfums)</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">+188%</span>
+      <span class="kpi-label">YoY growth Q3 2025</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">2</span>
+      <span class="kpi-label">Phased launches (COTY)</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">23.2%</span>
+      <span class="kpi-label">Net PPM maintained</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">01 · The Opportunity</div>
+  <h2 class="section-title">Unlocking untapped demand in Tier 2 EU markets</h2>
+  <p class="section-body">
+    While Interparfums and COTY had strong presence in the EU5 core markets (UK, DE, FR, IT, ES), customer demand data revealed significant search volume and unmet demand in Belgium, Netherlands, Poland, Sweden, and Ireland — markets where the brands had zero Amazon presence.
+  </p>
+
+  <div class="map-container">
+    <div class="map-title">// GEOGRAPHIC EXPANSION — EU5 → EU10</div>
+    <div class="map-grid">
+      <div class="map-vis">
+        <!-- Simplified EU map with markers -->
+        <svg class="map-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect width="400" height="300" fill="rgba(255,255,255,0.02)" rx="8"/>
+          
+          <!-- EU silhouette simplified -->
+          <path d="M 40,100 L 50,80 L 80,70 L 120,60 L 160,65 L 200,70 L 240,80 L 270,100 L 290,130 L 300,160 L 290,190 L 270,210 L 240,220 L 200,225 L 160,220 L 120,210 L 80,190 L 50,160 L 40,130 Z" fill="rgba(124,212,240,0.08)" stroke="rgba(124,212,240,0.2)" stroke-width="1"/>
+          
+          <!-- Existing markets — green dots -->
+          <circle cx="50" cy="95" r="8" fill="rgba(184,240,124,0.3)" stroke="#b8f07c" stroke-width="2"/>
+          <text x="50" y="99" text-anchor="middle" font-size="9" fill="#b8f07c" font-family="Space Mono">UK</text>
+          
+          <circle cx="80" cy="140" r="8" fill="rgba(184,240,124,0.3)" stroke="#b8f07c" stroke-width="2"/>
+          <text x="80" y="144" text-anchor="middle" font-size="9" fill="#b8f07c" font-family="Space Mono">FR</text>
+          
+          <circle cx="150" cy="115" r="8" fill="rgba(184,240,124,0.3)" stroke="#b8f07c" stroke-width="2"/>
+          <text x="150" y="119" text-anchor="middle" font-size="9" fill="#b8f07c" font-family="Space Mono">DE</text>
+          
+          <circle cx="160" cy="175" r="8" fill="rgba(184,240,124,0.3)" stroke="#b8f07c" stroke-width="2"/>
+          <text x="160" y="179" text-anchor="middle" font-size="9" fill="#b8f07c" font-family="Space Mono">IT</text>
+          
+          <circle cx="50" cy="180" r="8" fill="rgba(184,240,124,0.3)" stroke="#b8f07c" stroke-width="2"/>
+          <text x="50" y="184" text-anchor="middle" font-size="9" fill="#b8f07c" font-family="Space Mono">ES</text>
+          
+          <!-- New markets — blue dots with pulse -->
+          <circle cx="120" cy="105" r="8" fill="rgba(124,212,240,0.3)" stroke="#7cd4f0" stroke-width="2">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="120" y="109" text-anchor="middle" font-size="9" fill="#7cd4f0" font-family="Space Mono">NL</text>
+          
+          <circle cx="110" cy="120" r="8" fill="rgba(124,212,240,0.3)" stroke="#7cd4f0" stroke-width="2">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="110" y="124" text-anchor="middle" font-size="9" fill="#7cd4f0" font-family="Space Mono">BE</text>
+          
+          <circle cx="220" cy="100" r="8" fill="rgba(124,212,240,0.3)" stroke="#7cd4f0" stroke-width="2">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="220" y="104" text-anchor="middle" font-size="9" fill="#7cd4f0" font-family="Space Mono">PL</text>
+          
+          <circle cx="200" cy="50" r="8" fill="rgba(124,212,240,0.3)" stroke="#7cd4f0" stroke-width="2">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="200" y="54" text-anchor="middle" font-size="9" fill="#7cd4f0" font-family="Space Mono">SE</text>
+          
+          <circle cx="30" cy="100" r="8" fill="rgba(124,212,240,0.3)" stroke="#7cd4f0" stroke-width="2">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="30" y="104" text-anchor="middle" font-size="9" fill="#7cd4f0" font-family="Space Mono">IE</text>
+          
+          <!-- Connecting lines from core to expansion -->
+          <line x1="150" y1="115" x2="120" y2="105" stroke="rgba(124,212,240,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+          <line x1="150" y1="115" x2="220" y2="100" stroke="rgba(124,212,240,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+          <line x1="150" y1="115" x2="200" y2="50" stroke="rgba(124,212,240,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+          <line x1="50" y1="95" x2="30" y2="100" stroke="rgba(124,212,240,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
+      
+      <div class="map-legend">
+        <div class="legend-group">
+          <h3>Existing EU5 Markets</h3>
+          <div class="legend-items">
+            <div class="legend-item">
+              <span class="legend-dot dot-existing"></span>
+              <span class="country-flag">🇬🇧</span>
+              <span class="country-name">United Kingdom</span>
+              <span>Core fragrance market</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-existing"></span>
+              <span class="country-flag">🇩🇪</span>
+              <span class="country-name">Germany</span>
+              <span>Largest EU revenue</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-existing"></span>
+              <span class="country-flag">🇫🇷</span>
+              <span class="country-name">France</span>
+              <span>Premium beauty stronghold</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-existing"></span>
+              <span class="country-flag">🇮🇹</span>
+              <span class="country-name">Italy</span>
+              <span>Fashion-forward audience</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-existing"></span>
+              <span class="country-flag">🇪🇸</span>
+              <span class="country-name">Spain</span>
+              <span>High growth potential</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="legend-group" style="margin-top:2rem;">
+          <h3>2025 Expansion Markets</h3>
+          <div class="legend-items">
+            <div class="legend-item">
+              <span class="legend-dot dot-new"></span>
+              <span class="country-flag">🇳🇱</span>
+              <span class="country-name">Netherlands</span>
+              <span style="color:var(--accent2);">Interparfums</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-new"></span>
+              <span class="country-flag">🇧🇪</span>
+              <span class="country-name">Belgium</span>
+              <span style="color:var(--accent2);">Interparfums</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-new"></span>
+              <span class="country-flag">🇵🇱</span>
+              <span class="country-name">Poland</span>
+              <span style="color:var(--accent2);">Interparfums</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-new"></span>
+              <span class="country-flag">🇸🇪</span>
+              <span class="country-name">Sweden</span>
+              <span style="color:var(--accent2);">Interparfums</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dot-new"></span>
+              <span class="country-flag">🇮🇪</span>
+              <span class="country-name">Ireland</span>
+              <span style="color:var(--accent3);">COTY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BRAND EXPANSION -->
+<section id="expansion">
+  <div class="section-label">02 · Expansion Strategy</div>
+  <h2 class="section-title">Two-brand, phased launch approach</h2>
+  <p class="section-body">
+    Each brand required a tailored expansion roadmap based on existing catalog maturity, supply chain readiness, and category entitlement analysis. Interparfums focused on fragrance-led expansion, while COTY executed a staged approach with makeup in 2025 and fragrance following in 2026.
+  </p>
+
+  <div class="brand-expansion">
+    <div class="exp-grid">
+      <!-- INTERPARFUMS -->
+      <div class="exp-card interparfums">
+        <div class="exp-logo">Interparfums Europe</div>
+        <div class="exp-cat">PRESTIGE FRAGRANCE · EU4 EXPANSION</div>
+        
+        <div class="exp-markets">
+          <div class="exp-market-item">🇳🇱 Netherlands — GUESS, DKNY, Roberto Cavalli</div>
+          <div class="exp-market-item">🇧🇪 Belgium — Full catalog launch</div>
+          <div class="exp-market-item">🇵🇱 Poland — Fragrance portfolio</div>
+          <div class="exp-market-item">🇸🇪 Sweden — Nordic entry strategy</div>
+        </div>
+        
+        <div style="padding:1rem; background:rgba(124,212,240,0.08); border-radius:6px; margin-bottom:1rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:.6rem; color:var(--accent2); letter-spacing:.1em; margin-bottom:.5rem;">Q3 2025 PERFORMANCE</div>
+          <div style="font-family:'Fraunces',serif; font-size:1.8rem; color:var(--accent2); font-weight:500; margin-bottom:.25rem;">€955.6K</div>
+          <div style="font-size:.75rem; color:var(--muted);">Q3 PCOGS across EU8 (+156.58% YoY)</div>
+        </div>
+        
+        <div class="exp-timeline">
+          <div class="timeline-label">// KEY MILESTONES</div>
+          <div class="timeline-items">
+            <div class="timeline-item"><strong>Q1 2025:</strong> Catalog onboarding & ASIN creation</div>
+            <div class="timeline-item"><strong>Q2 2025:</strong> Supply chain enablement & FBA setup</div>
+            <div class="timeline-item"><strong>Q3 2025:</strong> Launch across EU4 + Prime Big Deal Days</div>
+            <div class="timeline-item"><strong>Q4 2025:</strong> Black Friday scaling + Roberto Cavalli ramp</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- COTY -->
+      <div class="exp-card coty">
+        <div class="exp-logo">COTY Beauty</div>
+        <div class="exp-cat">GLOBAL BEAUTY · PHASED CATEGORY LAUNCH</div>
+        
+        <div class="exp-markets">
+          <div class="exp-market-item">🇮🇪 Ireland — 2-phase expansion strategy</div>
+        </div>
+        
+        <div style="padding:1rem; background:rgba(240,188,124,0.08); border-radius:6px; margin-bottom:1rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:.6rem; color:var(--accent3); letter-spacing:.1em; margin-bottom:.5rem;">PHASED ROLLOUT</div>
+          <div style="display:flex; gap:1.5rem; margin-top:.75rem;">
+            <div>
+              <div style="font-family:'Fraunces',serif; font-size:1.3rem; color:var(--accent3); font-weight:500;">2025</div>
+              <div style="font-size:.72rem; color:var(--muted); margin-top:.25rem;">Makeup launch</div>
+            </div>
+            <div style="border-left:1px solid var(--border);"></div>
+            <div>
+              <div style="font-family:'Fraunces',serif; font-size:1.3rem; color:var(--accent3); font-weight:500;">2026</div>
+              <div style="font-size:.72rem; color:var(--muted); margin-top:.25rem;">Fragrance launch</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="exp-timeline">
+          <div class="timeline-label">// LAUNCH ROADMAP</div>
+          <div class="timeline-items">
+            <div class="timeline-item"><strong>2025 Phase 1:</strong> Makeup category onboarding (Ireland)</div>
+            <div class="timeline-item"><strong>2025 Q4:</strong> Catalog optimization & performance benchmarking</div>
+            <div class="timeline-item"><strong>2026 Phase 2:</strong> Fragrance portfolio launch</div>
+            <div class="timeline-item"><strong>2026 H2:</strong> Cross-category bundling & promotional strategy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXECUTION -->
+<section id="execution">
+  <div class="section-label">03 · Execution</div>
+  <h2 class="section-title">End-to-end vendor onboarding and profitability management</h2>
+  
+  <div class="expansion-timeline">
+    <div class="timeline-track">
+      <div class="timeline-phase">
+        <div class="phase-quarter">Q1 2025</div>
+        <div class="phase-title">Market Analysis & Planning</div>
+        <div class="phase-items">
+          <div class="phase-item">Search volume & demand analysis per market</div>
+          <div class="phase-item">Category entitlement benchmarking</div>
+          <div class="phase-item">Competitor landscape review</div>
+          <div class="phase-item">Profitability model development</div>
+        </div>
+      </div>
+      
+      <div class="timeline-phase">
+        <div class="phase-quarter">Q2 2025</div>
+        <div class="phase-title">Catalog Onboarding</div>
+        <div class="phase-items">
+          <div class="phase-item">ASIN creation & content localization</div>
+          <div class="phase-item">SKU selection prioritization (GUESS, DKNY, RC)</div>
+          <div class="phase-item">Image & A+ content optimization</div>
+          <div class="phase-item">Supply chain coordination</div>
+        </div>
+      </div>
+      
+      <div class="timeline-phase">
+        <div class="phase-quarter">Q3 2025</div>
+        <div class="phase-title">Launch & Deals</div>
+        <div class="phase-items">
+          <div class="phase-item">Go-live across NL, BE, PL, SE</div>
+          <div class="phase-item">Prime Big Deal Days participation</div>
+          <div class="phase-item">Back to School Tier 2 deals</div>
+          <div class="phase-item">Performance monitoring & optimization</div>
+        </div>
+      </div>
+      
+      <div class="timeline-phase">
+        <div class="phase-quarter">Q4 2025</div>
+        <div class="phase-title">Scale & Optimize</div>
+        <div class="phase-items">
+          <div class="phase-item">Black Friday / Cyber Monday scaling</div>
+          <div class="phase-item">Net PPM optimization (23.2% target)</div>
+          <div class="phase-item">Roberto Cavalli portfolio expansion</div>
+          <div class="phase-item">Virtual bundle creation (100ml + body mist)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- CHALLENGES & SOLUTIONS -->
+  <div style="margin-top:3rem;">
+    <div class="section-label">Key Challenges & Solutions</div>
+    <div class="cs-grid">
+      <div class="cs-card challenge">
+        <div class="cs-icon">[!]</div>
+        <h3>Challenges Encountered</h3>
+        <div class="cs-list">
+          <div class="cs-item">Poland profitability crisis — Net PPM at 10.57% (vs 23.2% target), driven by Roberto Cavalli negative margins</div>
+          <div class="cs-item">Germany & France JIT (Just-In-Time) POs at 99%, negatively impacting D2FC delivery performance</div>
+          <div class="cs-item">DKNY brand profitability drainers in ES & IT — specific ASINs driving Net PPM down 150bps YTD</div>
+          <div class="cs-item">Confirmation Rate at 77.6% (–1,198 bps YoY) due to supply chain misalignment on new SKU forecasts</div>
+          <div class="cs-item">Perfect Inbound Defect at 6.14% driven by missing CLI/GTIN onboarding and bagging prep requirements</div>
+        </div>
+      </div>
+      
+      <div class="cs-card solution">
+        <div class="cs-icon">[✓]</div>
+        <h3>Strategic Solutions Implemented</h3>
+        <div class="cs-list">
+          <div class="cs-item">Poland deal exclusion — Discontinued BFCM & LMD deal participation in PL (projected BFCM Net PPM at –94.6%)</div>
+          <div class="cs-item">JIT reduction initiative — Implemented rolling forecast sharing & deal planning visibility to reduce JIT POs</div>
+          <div class="cs-item">SKU-level profitability analysis — Identified and paused underperforming ASINs (DKNY Be Delicious 30ml, DKNY Women 50ml)</div>
+          <div class="cs-item">Virtual bundle creation — Launched 100ml fragrance + body mist bundles to improve ASP and Net PPM</div>
+          <div class="cs-item">Inbound compliance training — Implemented CLI/GTIN onboarding process and prep requirement documentation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- METRICS -->
+<section>
+  <div class="section-label">04 · Performance Metrics</div>
+  <h2 class="section-title">Interparfums Q3 2025 — Expansion KPIs</h2>
+  
+  <div class="metrics-section">
+    <div style="font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.1em; margin-bottom:1.5rem;">// TOPLINE REVENUE & PROFITABILITY</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-num blue">€2.49M</div>
+        <div class="metric-label">YTD PCOGS<br/>+188.54% YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num blue">€955.6K</div>
+        <div class="metric-label">Q3 PCOGS<br/>+156.58% YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num green">23.2%</div>
+        <div class="metric-label">Net PPM YTD<br/>+1,501 bps YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num green">21.52%</div>
+        <div class="metric-label">Q3 Net PPM<br/>+2,167 bps YoY</div>
+      </div>
+    </div>
+    
+    <div style="font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.1em; margin:2.5rem 0 1.5rem;">// OPERATIONAL EXCELLENCE</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-num amber">€423K</div>
+        <div class="metric-label">YTD Deal OPS<br/>+81% YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num amber">95.9%</div>
+        <div class="metric-label">Q3 D2FC Rate<br/>+7,130 bps YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num green">78.9%</div>
+        <div class="metric-label">YTD Conf. Rate<br/>+2,370 bps YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num green">11.92%</div>
+        <div class="metric-label">SoROOS YTD<br/>–952 bps improvement</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Brand Performance Breakdown -->
+  <div style="margin-top:3rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.1em; margin-bottom:1rem;">// Q3 2025 PCOGS BY BRAND — EU8</div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;">
+      <div style="padding:1.5rem; border:1px solid var(--border); background:var(--surface); border-radius:8px; border-top:3px solid var(--accent2);">
+        <div style="font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; margin-bottom:.5rem;">GUESS</div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; color:var(--accent2); margin-bottom:.25rem;">44%</div>
+        <div style="font-size:.75rem; color:var(--muted);">Share of Q3 PCOGS<br/>Top performer across EU8</div>
+      </div>
+      <div style="padding:1.5rem; border:1px solid var(--border); background:var(--surface); border-radius:8px; border-top:3px solid var(--accent);">
+        <div style="font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; margin-bottom:.5rem;">DKNY</div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; color:var(--accent); margin-bottom:.25rem;">35%</div>
+        <div style="font-size:.75rem; color:var(--muted);">Share of Q3 PCOGS<br/>Strong in core EU5</div>
+      </div>
+      <div style="padding:1.5rem; border:1px solid var(--border); background:var(--surface); border-radius:8px; border-top:3px solid var(--accent3);">
+        <div style="font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; margin-bottom:.5rem;">Roberto Cavalli</div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; color:var(--accent3); margin-bottom:.25rem;">21%</div>
+        <div style="font-size:.75rem; color:var(--muted);">Share of Q3 PCOGS<br/>+2,291% YoY growth</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="section-label">05 · Business Impact</div>
+  <h2 class="section-title">From zero to €2.49M — Unlocking new revenue streams</h2>
+  <p class="section-body">
+    The expansion delivered immediate revenue growth while maintaining profitability discipline. By Q3 2025, the EU4 expansion markets contributed 27.4% of total Interparfums PCOGS, validating the strategic investment in Tier 2 European marketplaces.
+  </p>
+
+  <div class="impact-grid">
+    <div class="impact-card">
+      <h3>// COMMERCIAL OUTCOMES</h3>
+      <div class="impact-items">
+        <div class="impact-item">Delivered €2.49M YTD PCOGS across EU8 at +188.54% YoY growth</div>
+        <div class="impact-item">EU4 expansion markets now represent 27.4% of total brand revenue</div>
+        <div class="impact-item">Maintained Net PPM at 23.2% despite rapid geographic expansion</div>
+        <div class="impact-item">Achieved €423K in Deal OPS (+81% YoY) through Prime Big Deal Days & BTS Tier 2 participation</div>
+        <div class="impact-item">GUESS brand achieved 54% PCOGS share in new expansion markets, validating SKU prioritization</div>
+      </div>
+    </div>
+    
+    <div class="impact-card">
+      <h3>// OPERATIONAL OUTCOMES</h3>
+      <div class="impact-items">
+        <div class="impact-item">Improved D2FC rate to 95.9% in Q3 (+7,130 bps YoY) through inbound compliance training</div>
+        <div class="impact-item">Confirmation Rate at 78.9% YTD (+2,370 bps YoY) via deal planning forecast & inventory visibility</div>
+        <div class="impact-item">Reduced SoROOS to 11.92% (–952 bps YTD) improving retail availability across new markets</div>
+        <div class="impact-item">Onboarded Roberto Cavalli portfolio across all 8 marketplaces with +2,291% YoY deal growth</div>
+        <div class="impact-item">Implemented virtual bundle strategy (100ml + body mist) to drive ASP and margin improvement</div>
+      </div>
+    </div>
+    
+    <div class="impact-card">
+      <h3>// STRATEGIC LEARNINGS</h3>
+      <div class="impact-items">
+        <div class="impact-item">Poland profitability constraint identified early — strategic decision to exclude from BFCM deals (projected –94.6% Net PPM)</div>
+        <div class="impact-item">SKU-level profitability analysis revealed DKNY margin drainers (Be Delicious 30ml, Women 50ml) — paused in ES/IT</div>
+        <div class="impact-item">JIT reduction initiative reduced supply chain friction and improved delivery compliance</div>
+        <div class="impact-item">Validated phased launch approach — COTY Ireland makeup 2025, fragrance 2026 based on category maturity</div>
+        <div class="impact-item">Created repeatable expansion playbook for future EU tier 2/3 market launches</div>
+      </div>
+    </div>
+    
+    <div class="impact-card">
+      <h3>// NEXT STEPS (2026)</h3>
+      <div class="impact-items">
+        <div class="impact-item">Launch Ferragamo brand across EU landscape — new premium fragrance line</div>
+        <div class="impact-item">COTY Phase 2: Ireland fragrance launch (H1 2026) with cross-category bundle optimization</div>
+        <div class="impact-item">Implement structural SOA (Statement of Agreement) to sustain competitive pricing in DE, ES, IT</div>
+        <div class="impact-item">Expand deal participation to EU8 tier 2 events while maintaining 23.4% Net PPM target</div>
+        <div class="impact-item">Evaluate Czech Republic, Austria, Denmark for 2026 H2 expansion phase</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="footer-tag">// portfolio</span> · EU Marketplace Expansion · Vendor Manager
+  </div>
+  <div style="color:var(--muted); font-size:.6rem;">
+    Data anonymised · Amazon Vendor Central project
+  </div>
+</footer>
+
+</body>
+</html>
