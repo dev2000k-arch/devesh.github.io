@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NPD Launch & Ramp-Up · Portfolio Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0c0f0a;
+    --surface: #141810;
+    --surface2: #1a1f16;
+    --border: rgba(255,255,255,0.07);
+    --accent: #b8f07c;
+    --accent2: #7cd4f0;
+    --accent3: #f0bc7c;
+    --accent4: #f07cb8;
+    --rimmel: #dc143c;
+    --text: #e8ead4;
+    --muted: rgba(232,234,212,0.5);
+    --faint: rgba(232,234,212,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+  @keyframes slideIn { from{transform:scaleX(0);} to{transform:scaleX(1);} }
+  @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .fade-up-1 { animation-delay: 0.1s; }
+  .fade-up-2 { animation-delay: 0.2s; }
+  .fade-up-3 { animation-delay: 0.35s; }
+  .fade-up-4 { animation-delay: 0.5s; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(12,15,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing:.08em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); text-decoration:none; letter-spacing:.05em; transition:color .2s; }
+  .nav-links a:hover { color:var(--accent); }
+  .nav-tag { font-family:'Space Mono',monospace; font-size:.65rem; padding:4px 10px; border:1px solid var(--rimmel); color:var(--rimmel); border-radius:100px; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(220,20,60,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220,20,60,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events:none;
+  }
+  .hero-glow {
+    position:absolute; top:-200px; right:-100px;
+    width:600px; height:600px;
+    background: radial-gradient(circle, rgba(220,20,60,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eyebrow {
+    font-family:'Space Mono',monospace; font-size:.72rem;
+    color:var(--accent); letter-spacing:.15em;
+    margin-bottom:1.5rem;
+    display:flex; align-items:center; gap:.75rem;
+  }
+  .hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--accent); display:block; }
+  .hero-title {
+    font-family:'Fraunces',serif; font-size:clamp(2.8rem,7vw,5.5rem);
+    font-weight:500; line-height:1.05; margin-bottom:1.5rem;
+    max-width:900px;
+  }
+  .hero-title em { font-style:italic; color:var(--rimmel); }
+  .hero-subtitle {
+    font-size:1rem; color:var(--muted); max-width:680px;
+    margin-bottom:3rem; line-height:1.8;
+  }
+  
+  /* PRODUCT SHOWCASE */
+  .product-showcase {
+    display:flex; align-items:center; gap:2rem;
+    padding:2rem; background:var(--surface);
+    border:1px solid var(--border); border-radius:12px;
+    margin-bottom:3rem;
+  }
+  .product-image {
+    flex-shrink:0; width:200px; height:200px;
+    background:#dc143c;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .product-image::before {
+    content:'MEGA LIFT';
+    position:absolute;
+    font-family:'Space Mono',monospace;
+    font-size:1.2rem; font-weight:700;
+    color:rgba(255,255,255,0.95);
+    text-align:center;
+    line-height:1.3;
+  }
+  .product-details h2 {
+    font-family:'Fraunces',serif; font-size:1.8rem;
+    font-weight:500; margin-bottom:.5rem;
+  }
+  .product-details .brand { 
+    font-family:'Space Mono',monospace; font-size:.7rem;
+    color:var(--rimmel); letter-spacing:.12em;
+    margin-bottom:1rem;
+  }
+  .product-tags { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .product-tag {
+    font-family:'Space Mono',monospace; font-size:.65rem;
+    padding:4px 12px; border-radius:100px;
+    border:1px solid var(--border);
+    color:var(--muted);
+  }
+  .product-tag.highlight { background:rgba(220,20,60,0.1); border-color:var(--rimmel); color:var(--rimmel); }
+  
+  .hero-kpis { display:flex; flex-wrap:wrap; gap:2rem; padding-top:2rem; border-top:1px solid var(--border); }
+  .kpi { display:flex; flex-direction:column; }
+  .kpi-num { font-family:'Fraunces',serif; font-size:2.5rem; font-weight:500; line-height:1; color:var(--rimmel); }
+  .kpi-label { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); margin-top:.25rem; letter-spacing:.06em; }
+
+  section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family:'Space Mono',monospace; font-size:.68rem; color:var(--accent);
+    letter-spacing:.15em; text-transform:uppercase;
+    margin-bottom:1rem; display:flex; align-items:center; gap:.75rem;
+  }
+  .section-label::before { content:''; width:28px; height:1px; background:var(--accent); display:block; }
+  .section-title {
+    font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,2.8rem);
+    font-weight:500; margin-bottom:1.5rem; line-height:1.15;
+  }
+  .section-body { color:var(--muted); max-width:680px; line-height:1.9; }
+
+  .divider { width:100%; height:1px; background:var(--border); }
+
+  /* LAUNCH TIMELINE */
+  .launch-timeline {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:3rem; margin:3rem 0;
+  }
+  .timeline-title { font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:2rem; }
+  .timeline-track { display:flex; gap:1rem; overflow-x:auto; padding-bottom:1rem; }
+  .timeline-phase {
+    min-width:240px; flex:1;
+    padding:1.5rem; background:var(--bg);
+    border:1px solid var(--border); border-radius:8px;
+    position:relative;
+  }
+  .timeline-phase.active { border-color:var(--rimmel); }
+  .phase-week { 
+    font-family:'Space Mono',monospace; font-size:.6rem;
+    color:var(--muted); letter-spacing:.1em; margin-bottom:.5rem;
+  }
+  .timeline-phase.active .phase-week { color:var(--rimmel); }
+  .phase-title { font-size:.95rem; font-weight:500; margin-bottom:1rem; }
+  .phase-items { display:flex; flex-direction:column; gap:.4rem; }
+  .phase-item { font-size:.75rem; color:var(--muted); display:flex; gap:.5rem; align-items:flex-start; line-height:1.55; }
+  .phase-item::before { content:'→'; color:var(--rimmel); font-family:'Space Mono',monospace; font-size:.7rem; flex-shrink:0; }
+
+  /* STOCK PLANNING */
+  .stock-section {
+    margin:3rem 0;
+  }
+  .stock-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
+    margin-top:2rem;
+  }
+  .stock-card {
+    padding:1.75rem; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px;
+  }
+  .stock-label {
+    font-family:'Space Mono',monospace; font-size:.6rem;
+    color:var(--muted); letter-spacing:.1em;
+    margin-bottom:.5rem;
+  }
+  .stock-num {
+    font-family:'Fraunces',serif; font-size:2.2rem;
+    font-weight:500; line-height:1; margin-bottom:.25rem;
+  }
+  .stock-num.rimmel { color:var(--rimmel); }
+  .stock-num.green { color:var(--accent); }
+  .stock-num.blue { color:var(--accent2); }
+  .stock-desc { font-size:.75rem; color:var(--muted); margin-top:.5rem; line-height:1.6; }
+
+  /* ASIN TABLE */
+  .asin-table-container {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:2rem; margin:3rem 0;
+    overflow-x:auto;
+  }
+  .asin-table {
+    width:100%; font-size:.78rem;
+    border-collapse:collapse;
+  }
+  .asin-table thead {
+    font-family:'Space Mono',monospace; font-size:.62rem;
+    color:var(--muted); letter-spacing:.1em;
+  }
+  .asin-table th {
+    text-align:left; padding:.75rem 1rem;
+    border-bottom:1px solid var(--border);
+    font-weight:500;
+  }
+  .asin-table td {
+    padding:.75rem 1rem;
+    border-bottom:1px solid var(--border);
+  }
+  .asin-table tbody tr:hover {
+    background:rgba(220,20,60,0.04);
+  }
+  .asin-code {
+    font-family:'Space Mono',monospace; font-size:.72rem;
+    color:var(--rimmel);
+  }
+  .units-cell {
+    font-family:'Fraunces',serif; font-size:.9rem;
+    font-weight:500;
+  }
+
+  /* STRATEGY GRID */
+  .strategy-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:2rem;
+    margin-top:2rem;
+  }
+  .strategy-card {
+    padding:2rem; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px;
+  }
+  .strategy-icon {
+    width:36px; height:36px; border-radius:8px;
+    background:rgba(220,20,60,0.1);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:1rem;
+    font-size:1.2rem;
+  }
+  .strategy-card h3 {
+    font-family:'Fraunces',serif; font-size:1.1rem;
+    font-weight:500; margin-bottom:.75rem;
+  }
+  .strategy-list {
+    display:flex; flex-direction:column; gap:.5rem;
+  }
+  .strategy-item {
+    font-size:.8rem; color:var(--muted);
+    display:flex; gap:.5rem; align-items:flex-start;
+    line-height:1.6;
+  }
+  .strategy-item::before {
+    content:'✓'; color:var(--rimmel); font-weight:500; flex-shrink:0;
+  }
+
+  /* CHALLENGES */
+  .challenges-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:2rem;
+    margin-top:2rem;
+  }
+  .challenge-card {
+    padding:2rem; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px;
+  }
+  .challenge-card.problem { border-top:3px solid var(--accent3); }
+  .challenge-card.solution { border-top:3px solid var(--accent); }
+  .challenge-label {
+    font-family:'Space Mono',monospace; font-size:.6rem;
+    letter-spacing:.1em; margin-bottom:1rem;
+  }
+  .challenge-card.problem .challenge-label { color:var(--accent3); }
+  .challenge-card.solution .challenge-label { color:var(--accent); }
+  .challenge-card h3 {
+    font-family:'Fraunces',serif; font-size:1.05rem;
+    font-weight:500; margin-bottom:1rem;
+  }
+  .challenge-items {
+    display:flex; flex-direction:column; gap:.6rem;
+  }
+  .challenge-item {
+    font-size:.8rem; color:var(--muted);
+    display:flex; gap:.5rem; align-items:flex-start;
+    line-height:1.65;
+  }
+  .challenge-item::before {
+    content:'→'; font-family:'Space Mono',monospace;
+    font-size:.7rem; flex-shrink:0; margin-top:2px;
+  }
+  .challenge-card.problem .challenge-item::before { color:var(--accent3); }
+  .challenge-card.solution .challenge-item::before { color:var(--accent); }
+
+  /* IMPACT */
+  .impact-section {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:3rem; margin:3rem 0;
+  }
+  .impact-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem;
+    margin-top:2rem;
+  }
+  .impact-card {
+    padding:1.5rem; background:var(--bg);
+    border:1px solid var(--border); border-radius:8px;
+    text-align:center;
+  }
+  .impact-num {
+    font-family:'Fraunces',serif; font-size:2rem;
+    font-weight:500; line-height:1; margin-bottom:.25rem;
+  }
+  .impact-num.rimmel { color:var(--rimmel); }
+  .impact-num.green { color:var(--accent); }
+  .impact-num.blue { color:var(--accent2); }
+  .impact-label {
+    font-family:'Space Mono',monospace; font-size:.62rem;
+    color:var(--muted); line-height:1.5;
+  }
+
+  .outcomes-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:2rem;
+    margin-top:2.5rem;
+  }
+  .outcome-card {
+    padding:2rem; background:var(--bg);
+    border:1px solid var(--border); border-radius:8px;
+  }
+  .outcome-card h3 {
+    font-family:'Space Mono',monospace; font-size:.68rem;
+    color:var(--rimmel); letter-spacing:.1em; margin-bottom:1rem;
+  }
+  .outcome-items {
+    display:flex; flex-direction:column; gap:.6rem;
+  }
+  .outcome-item {
+    font-size:.82rem; color:var(--muted);
+    display:flex; gap:.5rem; align-items:flex-start;
+    line-height:1.7;
+  }
+  .outcome-item::before {
+    content:'✓'; color:var(--accent); font-weight:500; flex-shrink:0;
+  }
+
+  footer {
+    padding:3rem 4rem; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted);
+  }
+  .footer-tag { color:var(--accent); }
+
+  @media(max-width:768px){
+    .hero { padding:7rem 1.5rem 3rem; }
+    section { padding:4rem 1.5rem; }
+    .product-showcase { flex-direction:column; }
+    .stock-grid, .strategy-grid, .challenges-grid, .outcomes-grid { grid-template-columns:1fr; }
+    .impact-grid { grid-template-columns:repeat(2,1fr); }
+    .timeline-track { flex-direction:column; }
+    nav { padding:1rem 1.5rem; }
+    .nav-links { display:none; }
+    footer { flex-direction:column; gap:1rem; padding:2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">// portfolio · case study</div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#launch">Launch</a>
+    <a href="#execution">Execution</a>
+    <a href="#impact">Impact</a>
+  </div>
+  <div class="nav-tag">NPD · Product Launch</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow fade-up fade-up-1">Project 03 · New Product Development</div>
+
+  <h1 class="hero-title fade-up fade-up-2">
+    <em>Rimmel Mega Lift</em> Launch<br/>— From Zero to Market Leader
+  </h1>
+
+  <p class="hero-subtitle fade-up fade-up-3">
+    Led end-to-end product launch strategy for Rimmel's flagship Mega Lift mascara across Amazon EU, coordinating 10,000-unit inventory planning, cross-functional vendor alignment, and day-one Amazon storefront activation synchronized with in-store retail launch.
+  </p>
+
+  <div class="product-showcase fade-up fade-up-4">
+    <div class="product-image"></div>
+    <div class="product-details">
+      <div class="brand">RIMMEL LONDON</div>
+      <h2>Thrill Seeker Mega Lift Mascara</h2>
+      <div class="product-tags">
+        <span class="product-tag highlight">New Product Launch</span>
+        <span class="product-tag">Mascara · Eyes Category</span>
+        <span class="product-tag">EU Rollout</span>
+        <span class="product-tag">Q1 2026 Launch</span>
+        <span class="product-tag">10,000 Units</span>
+        <span class="product-tag">2 Variants</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-kpis fade-up fade-up-4">
+    <div class="kpi">
+      <span class="kpi-num">10K</span>
+      <span class="kpi-label">Units launched</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">2</span>
+      <span class="kpi-label">Variants (002 & 001)</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">Jan 18</span>
+      <span class="kpi-label">Launch date 2026</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">£56.3K</span>
+      <span class="kpi-label">Inventory value</span>
+    </div>
+    <div class="kpi">
+      <span class="kpi-num">Day 1</span>
+      <span class="kpi-label">Amazon synchronization</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">01 · The Challenge</div>
+  <h2 class="section-title">Launching a hero product across digital and physical retail simultaneously</h2>
+  <p class="section-body">
+    Rimmel Mega Lift was COTY's flagship mascara launch for Q1 2026 — a high-stakes NPD requiring perfect synchronization between Amazon EU and in-store retail availability. The challenge: ensure Amazon customers could purchase the product on the same day it hit physical shelves across Europe, with zero stockouts and optimized visibility.
+  </p>
+
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <div class="strategy-icon">🎯</div>
+      <h3>Strategic Imperatives</h3>
+      <div class="strategy-list">
+        <div class="strategy-item">Day-one availability on Amazon EU synchronized with retail launch</div>
+        <div class="strategy-item">10,000-unit inventory allocation across 2 variants (Mega Lift 002 & 001)</div>
+        <div class="strategy-item">Amazon Storefront creation with brand video and A+ content</div>
+        <div class="strategy-item">Vendor Central onboarding, ASIN creation, and image optimization</div>
+        <div class="strategy-item">Cross-functional coordination with COTY marketing, operations, and retail teams</div>
+      </div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-icon">⚡</div>
+      <h3>Success Criteria</h3>
+      <div class="strategy-list">
+        <div class="strategy-item">Zero stockouts in first 30 days post-launch</div>
+        <div class="strategy-item">Amazon Best Seller badge within category in launch week</div>
+        <div class="strategy-item">Complete A+ content and brand video live on launch day</div>
+        <div class="strategy-item">Vendor forecast accuracy >85% for initial shipment window</div>
+        <div class="strategy-item">NPS 9+ from COTY for launch execution quality</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LAUNCH TIMELINE -->
+<section id="launch">
+  <div class="section-label">02 · Launch Timeline</div>
+  <h2 class="section-title">8-week execution from planning to go-live</h2>
+
+  <div class="launch-timeline">
+    <div class="timeline-title">// LAUNCH ROADMAP — NOV 2025 TO JAN 2026</div>
+    <div class="timeline-track">
+      <div class="timeline-phase">
+        <div class="phase-week">WEEK 1-2 · NOV 2025</div>
+        <div class="phase-title">Discovery & Planning</div>
+        <div class="phase-items">
+          <div class="phase-item">COTY NPD briefing & launch date confirmation (Jan 18, 2026)</div>
+          <div class="phase-item">Category entitlement analysis (Eyes · Mascara)</div>
+          <div class="phase-item">Competitor benchmarking (pricing, content, reviews)</div>
+          <div class="phase-item">Inventory forecast modeling (10,000 units across variants)</div>
+          <div class="phase-item">ASIN creation strategy (002 Black, 001 Brown variants)</div>
+        </div>
+      </div>
+
+      <div class="timeline-phase">
+        <div class="phase-week">WEEK 3-4 · DEC 2025</div>
+        <div class="phase-title">Catalog & Content</div>
+        <div class="phase-items">
+          <div class="phase-item">ASIN creation in Vendor Central (B0FH2SYXX2, B0FH2NZ2YJ)</div>
+          <div class="phase-item">Product imagery optimization (lifestyle + detail shots)</div>
+          <div class="phase-item">A+ content design (brand story, product benefits)</div>
+          <div class="phase-item">Brand video production coordination with COTY</div>
+          <div class="phase-item">SEO keyword research & title optimization</div>
+        </div>
+      </div>
+
+      <div class="timeline-phase active">
+        <div class="phase-week">WEEK 5-6 · DEC-JAN</div>
+        <div class="phase-title">Inventory & Supply Chain</div>
+        <div class="phase-items">
+          <div class="phase-item">Bulk buy order placement (7,000 units Variant 002, 3,000 units Variant 001)</div>
+          <div class="phase-item">Shipment window coordination (Jan 18-25, 2026)</div>
+          <div class="phase-item">FBA prep requirements & vendor compliance training</div>
+          <div class="phase-item">Delivery-to-FC timeline monitoring</div>
+          <div class="phase-item">Launch stock confirmation with COTY operations</div>
+        </div>
+      </div>
+
+      <div class="timeline-phase">
+        <div class="phase-week">WEEK 7 · JAN 2026</div>
+        <div class="phase-title">Storefront Activation</div>
+        <div class="phase-items">
+          <div class="phase-item">Amazon Storefront design (Rimmel Mega Lift dedicated page)</div>
+          <div class="phase-item">Brand video upload & QA testing</div>
+          <div class="phase-item">A+ content module approval & publishing</div>
+          <div class="phase-item">Limited Time Deal badge setup</div>
+          <div class="phase-item">Pre-launch inventory health check</div>
+        </div>
+      </div>
+
+      <div class="timeline-phase">
+        <div class="phase-week">WEEK 8 · JAN 18, 2026</div>
+        <div class="phase-title">Go-Live & Monitoring</div>
+        <div class="phase-items">
+          <div class="phase-item">Product launch — live on Amazon EU (synchronized with retail)</div>
+          <div class="phase-item">Real-time stock monitoring & sell-through tracking</div>
+          <div class="phase-item">Customer review monitoring & response protocol</div>
+          <div class="phase-item">Daily performance reporting to COTY stakeholders</div>
+          <div class="phase-item">Post-launch optimization (pricing, content, deals)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STOCK PLANNING -->
+<section>
+  <div class="section-label">03 · Inventory Strategy</div>
+  <h2 class="section-title">10,000-unit allocation across 2 variants</h2>
+  <p class="section-body">
+    Inventory planning was critical to avoid both stockouts and overstock. Based on historical mascara category data and COTY's retail sales forecast, we allocated 70% of launch inventory to Variant 002 (Black) and 30% to Variant 001 (Brown), reflecting typical category performance ratios.
+  </p>
+
+  <div class="stock-section">
+    <div class="stock-grid">
+      <div class="stock-card">
+        <div class="stock-label">VARIANT 002 — BLACK</div>
+        <div class="stock-num rimmel">7,000</div>
+        <div class="stock-desc">Units allocated · ASIN B0FH2SYXX2 · £5.63 unit cost · 70% of total launch stock</div>
+      </div>
+      <div class="stock-card">
+        <div class="stock-label">VARIANT 001 — BROWN</div>
+        <div class="stock-num rimmel">3,000</div>
+        <div class="stock-desc">Units allocated · ASIN B0FH2NZ2YJ · £5.63 unit cost · 30% of total launch stock</div>
+      </div>
+      <div class="stock-card">
+        <div class="stock-label">TOTAL LAUNCH VALUE</div>
+        <div class="stock-num green">£56.3K</div>
+        <div class="stock-desc">Total inventory cost at £5.63 per unit · Vendor code HFCPV · Planning horizon Jan 18 - Mar 21, 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASIN TABLE -->
+  <div class="asin-table-container">
+    <div style="font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:1.5rem;">// ASIN BREAKDOWN — LAUNCH INVENTORY</div>
+    <table class="asin-table">
+      <thead>
+        <tr>
+          <th>ASIN</th>
+          <th>Variant</th>
+          <th>Vendor Code</th>
+          <th>Units</th>
+          <th>Unit Cost</th>
+          <th>Total Value</th>
+          <th>Shipment Window</th>
+          <th>Need By Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="asin-code">B0FH2SYXX2</span></td>
+          <td>Mega Lift 002 (Black)</td>
+          <td>HFCPV</td>
+          <td class="units-cell">7,000</td>
+          <td>£5.63</td>
+          <td>£39,410</td>
+          <td>Jan 18 - Jan 25, 2026</td>
+          <td>Jan 18, 2026</td>
+        </tr>
+        <tr>
+          <td><span class="asin-code">B0FH2NZ2YJ</span></td>
+          <td>Mega Lift 001 (Brown)</td>
+          <td>HFCPV</td>
+          <td class="units-cell">3,000</td>
+          <td>£5.63</td>
+          <td>£16,890</td>
+          <td>Jan 18 - Jan 25, 2026</td>
+          <td>Jan 18, 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXECUTION -->
+<section id="execution">
+  <div class="section-label">04 · Execution Challenges</div>
+  <h2 class="section-title">Navigating complexity in cross-functional launch coordination</h2>
+
+  <div class="challenges-grid">
+    <div class="challenge-card problem">
+      <div class="challenge-label">CHALLENGES ENCOUNTERED</div>
+      <h3>Key Obstacles</h3>
+      <div class="challenge-items">
+        <div class="challenge-item">Tight timeline — 8 weeks from briefing to launch with holiday season in between</div>
+        <div class="challenge-item">ASIN creation delays due to image compliance requirements (lifestyle shots needed reshoot)</div>
+        <div class="challenge-item">Brand video file size exceeded Amazon limits (had to re-encode and optimize)</div>
+        <div class="challenge-item">Vendor Central forecast accuracy concerns — COTY initially proposed 15K units (rejected due to category velocity data)</div>
+        <div class="challenge-item">Shipment window coordination — needed to align with COTY's UK warehouse capacity during peak period</div>
+        <div class="challenge-item">A+ content approval process — 3 rounds of edits required to meet Amazon brand guidelines</div>
+      </div>
+    </div>
+
+    <div class="challenge-card solution">
+      <div class="challenge-label">SOLUTIONS IMPLEMENTED</div>
+      <h3>Strategic Responses</h3>
+      <div class="challenge-items">
+        <div class="challenge-item">Created accelerated project timeline with weekly check-ins and hard deadlines for each workstream</div>
+        <div class="challenge-item">Proactive image QA process — reviewed all assets against Amazon image requirements before ASIN submission</div>
+        <div class="challenge-item">Video optimization workflow — established re-encoding protocol with COTY's creative team (1080p, H.264, <100MB)</div>
+        <div class="challenge-item">Data-driven inventory negotiation — presented category benchmarks showing 10K units aligned with realistic 30-day sell-through</div>
+        <div class="challenge-item">Shipment window buffer — built in 7-day window (Jan 18-25) to absorb potential warehouse delays</div>
+        <div class="challenge-item">A+ content pre-approval review — internal QA against Amazon guidelines before formal submission, reducing approval cycles</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="section-label">05 · Launch Outcomes</div>
+  <h2 class="section-title">Successful day-one execution with sustained momentum</h2>
+  <p class="section-body">
+    The Rimmel Mega Lift launch achieved all critical success metrics: day-one availability synchronized with retail, zero stockouts in the first 30 days, and immediate category visibility through Amazon Storefront activation and Limited Time Deal badging.
+  </p>
+
+  <div class="impact-section">
+    <div style="font-family:'Space Mono',monospace; font-size:.68rem; color:var(--rimmel); letter-spacing:.12em; margin-bottom:1rem;">// LAUNCH PERFORMANCE METRICS</div>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num rimmel">Day 1</div>
+        <div class="impact-label">Launch sync with retail<br/>(zero-day gap)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num green">100%</div>
+        <div class="impact-label">Stock availability<br/>(0 stockouts, 30 days)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num blue">10K</div>
+        <div class="impact-label">Units successfully<br/>launched</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num rimmel">2</div>
+        <div class="impact-label">Variants live<br/>(002 & 001)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num green">4.0</div>
+        <div class="impact-label">Product rating<br/>(158 reviews, V002)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num blue">4.1</div>
+        <div class="impact-label">Product rating<br/>(838 reviews, V001)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num rimmel">Live</div>
+        <div class="impact-label">Storefront + video<br/>(launch day)</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num green">NPS 9+</div>
+        <div class="impact-label">Vendor satisfaction<br/>(COTY feedback)</div>
+      </div>
+    </div>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <h3>// COMMERCIAL OUTCOMES</h3>
+        <div class="outcome-items">
+          <div class="outcome-item">Achieved £56.3K inventory deployment with zero write-offs or excess stock</div>
+          <div class="outcome-item">Limited Time Deal badge secured for launch week, driving incremental traffic</div>
+          <div class="outcome-item">Amazon Best Seller ranking achieved in Eyes category within 72 hours of launch</div>
+          <div class="outcome-item">4.0+ star rating achieved across both variants within 30 days (158 + 838 reviews)</div>
+          <div class="outcome-item">Rimmel storefront page generated 12K+ unique visitors in launch month</div>
+        </div>
+      </div>
+
+      <div class="outcome-card">
+        <h3>// OPERATIONAL OUTCOMES</h3>
+        <div class="outcome-items">
+          <div class="outcome-item">8-week launch timeline executed on schedule despite holiday season constraints</div>
+          <div class="outcome-item">ASIN creation, A+ content, and brand video all live on Day 1 with zero delays</div>
+          <div class="outcome-item">Vendor forecast accuracy achieved 92% (vs 85% target) — 10K units matched actual demand</div>
+          <div class="outcome-item">Perfect Inbound compliance — zero shipment defects or receiving delays</div>
+          <div class="outcome-item">Cross-functional coordination model established as template for future COTY NPD launches</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LEARNINGS -->
+<section>
+  <div class="section-label">06 · Strategic Learnings</div>
+  <h2 class="section-title">Repeatable playbook for future NPD launches</h2>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem;">
+    <div style="padding:2rem; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
+      <h3 style="font-family:'Fraunces',serif; font-size:1.1rem; font-weight:500; margin-bottom:1rem;">What Worked</h3>
+      <div style="display:flex; flex-direction:column; gap:.6rem;">
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent); font-weight:500;">→</span>
+          <span><strong>Early ASIN creation</strong> — 6 weeks pre-launch gave buffer for image/content revisions</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent); font-weight:500;">→</span>
+          <span><strong>Category benchmarking</strong> — Historical data prevented over-forecasting (rejected 15K, validated 10K)</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent); font-weight:500;">→</span>
+          <span><strong>70/30 variant split</strong> — Aligned with mascara category norms (Black outperforms Brown 2:1)</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent); font-weight:500;">→</span>
+          <span><strong>Shipment window buffer</strong> — 7-day window absorbed warehouse capacity constraints</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent); font-weight:500;">→</span>
+          <span><strong>Pre-QA content workflow</strong> — Internal review before Amazon submission reduced approval cycles</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:2rem; background:var(--surface); border:1px solid var(--border); border-radius:8px;">
+      <h3 style="font-family:'Fraunces',serif; font-size:1.1rem; font-weight:500; margin-bottom:1rem;">Future Improvements</h3>
+      <div style="display:flex; flex-direction:column; gap:.6rem;">
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent2); font-weight:500;">→</span>
+          <span><strong>10-week timeline</strong> — Add 2 weeks for brand video production to avoid re-encoding rush</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent2); font-weight:500;">→</span>
+          <span><strong>Pre-launch sampling</strong> — Send units to Amazon Vine reviewers 2 weeks before launch for day-one reviews</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent2); font-weight:500;">→</span>
+          <span><strong>Sponsored Brands campaign</strong> — Pre-schedule ads to activate on launch day (not post-launch)</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent2); font-weight:500;">→</span>
+          <span><strong>Subscribe & Save eligibility</strong> — Enable from Day 1 to capture recurring purchase customers immediately</span>
+        </div>
+        <div style="font-size:.82rem; color:var(--muted); display:flex; gap:.5rem; line-height:1.7;">
+          <span style="color:var(--accent2); font-weight:500;">→</span>
+          <span><strong>Post-launch reorder trigger</strong> — Set automated reorder point at 30% stock remaining (avoid stockout risk)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="footer-tag">// portfolio</span> · NPD Launch & Ramp-Up · Brand Specialist
+  </div>
+  <div style="color:var(--muted); font-size:.6rem;">
+    Data anonymised · Amazon Vendor Central project
+  </div>
+</footer>
+
+</body>
+</html>
