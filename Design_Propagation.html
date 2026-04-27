@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Winter Selection Propagation · Portfolio Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0c0f0a;
+    --surface: #141810;
+    --surface2: #1a1f16;
+    --border: rgba(255,255,255,0.07);
+    --accent: #b8f07c;
+    --accent2: #7cd4f0;
+    --accent3: #f0bc7c;
+    --accent4: #f07cb8;
+    --orange: #ffaa66;
+    --text: #e8ead4;
+    --muted: rgba(232,234,212,0.5);
+    --faint: rgba(232,234,212,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideIn { from{transform:scaleX(0);} to{transform:scaleX(1);} }
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .fade-up-1 { animation-delay: 0.1s; }
+  .fade-up-2 { animation-delay: 0.2s; }
+  .fade-up-3 { animation-delay: 0.35s; }
+  .fade-up-4 { animation-delay: 0.5s; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(12,15,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing:.08em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); text-decoration:none; letter-spacing:.05em; transition:color .2s; }
+  .nav-links a:hover { color:var(--accent); }
+  .nav-tag { font-family:'Space Mono',monospace; font-size:.65rem; padding:4px 10px; border:1px solid var(--orange); color:var(--orange); border-radius:100px; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,170,102,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,170,102,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events:none;
+  }
+  .hero-glow {
+    position:absolute; top:-200px; right:-100px;
+    width:600px; height:600px;
+    background: radial-gradient(circle, rgba(255,170,102,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eyebrow {
+    font-family:'Space Mono',monospace; font-size:.72rem;
+    color:var(--accent); letter-spacing:.15em;
+    margin-bottom:1.5rem;
+    display:flex; align-items:center; gap:.75rem;
+  }
+  .hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--accent); display:block; }
+  .hero-title {
+    font-family:'Fraunces',serif; font-size:clamp(2.8rem,7vw,5rem);
+    font-weight:500; line-height:1.05; margin-bottom:1.5rem;
+    max-width:900px;
+  }
+  .hero-title em { font-style:italic; color:var(--orange); }
+  .hero-subtitle {
+    font-size:1rem; color:var(--muted); max-width:720px;
+    margin-bottom:3rem; line-height:1.8;
+  }
+  .hero-kpis { display:flex; flex-wrap:wrap; gap:2rem; padding-top:2rem; border-top:1px solid var(--border); }
+  .kpi { display:flex; flex-direction:column; }
+  .kpi-num { font-family:'Fraunces',serif; font-size:2.5rem; font-weight:500; line-height:1; color:var(--orange); }
+  .kpi-label { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); margin-top:.25rem; letter-spacing:.06em; }
+
+  section { padding: 6rem 4rem; max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    font-family:'Space Mono',monospace; font-size:.68rem; color:var(--accent);
+    letter-spacing:.15em; text-transform:uppercase;
+    margin-bottom:1rem; display:flex; align-items:center; gap:.75rem;
+  }
+  .section-label::before { content:''; width:28px; height:1px; background:var(--accent); display:block; }
+  .section-title {
+    font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,2.8rem);
+    font-weight:500; margin-bottom:1.5rem; line-height:1.25;
+  }
+  .section-body { color:var(--muted); max-width:720px; line-height:1.9; }
+
+  .divider { width:100%; height:1px; background:var(--border); }
+
+  .impact-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem;
+    margin:2.5rem 0;
+  }
+  .impact-card {
+    padding:1.75rem 1.5rem; background:var(--surface);
+    border:1px solid var(--border); border-radius:12px;
+    text-align:center;
+  }
+  .impact-num {
+    font-family:'Fraunces',serif; font-size:2rem;
+    font-weight:500; line-height:1; margin-bottom:.5rem;
+  }
+  .impact-num.orange { color:var(--orange); }
+  .impact-num.green { color:var(--accent); }
+  .impact-num.blue { color:var(--accent2); }
+  .impact-label {
+    font-family:'Space Mono',monospace; font-size:.65rem;
+    color:var(--muted); line-height:1.5;
+  }
+
+  .two-col {
+    display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin:2rem 0;
+  }
+  .metric-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:1.5rem;
+  }
+  .metric-value { font-family:'Fraunces',serif; font-size:2rem; color:var(--accent); margin-bottom:.5rem; }
+
+  table {
+    width:100%; border-collapse:collapse; margin:1.5rem 0;
+  }
+  th, td {
+    text-align:left; padding:.75rem .5rem;
+    border-bottom:1px solid var(--border);
+    font-size:.8rem;
+  }
+  th {
+    font-family:'Space Mono',monospace; font-size:.65rem;
+    color:var(--accent2);
+  }
+  .highlight { color:var(--orange); font-weight:500; }
+
+  footer {
+    padding:3rem 4rem; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted);
+  }
+  .footer-tag { color:var(--accent); }
+
+  @media (max-width:768px){
+    .hero { padding:7rem 1.5rem 3rem; }
+    section { padding:4rem 1.5rem; }
+    .two-col, .impact-grid { grid-template-columns:1fr; }
+    nav { padding:1rem 1.5rem; }
+    .nav-links { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">// portfolio · case study</div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#impact">Impact</a>
+    <a href="#music">Music Extension</a>
+  </div>
+  <div class="nav-tag">Selection · Propagation · Music</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow fade-up fade-up-1">Project 06 · Selection & Propagation</div>
+  <h1 class="hero-title fade-up fade-up-2">
+    Winter Selection <em>Propagation</em><br/>— From T‑Shirts to Winter Categories
+  </h1>
+  <p class="hero-subtitle fade-up fade-up-3">
+    Identified 181K top‑selling t‑shirt designs across EU5 and propagated them to hoodies, sweatshirts and long‑sleeves. 
+    Propagated designs outperformed non‑propagated by +26%, unlocking +$661K monthly OPS. Extended the logic to Amazon Music, 
+    enabling artist‑based cross‑propagation using customer search and listening preferences.
+  </p>
+  <div class="hero-kpis fade-up fade-up-4">
+    <div class="kpi"><span class="kpi-num">181K</span><span class="kpi-label">Designs to propagate</span></div>
+    <div class="kpi"><span class="kpi-num">+26%</span><span class="kpi-label">Performance uplift</span></div>
+    <div class="kpi"><span class="kpi-num">$661K</span><span class="kpi-label">Monthly OPS potential</span></div>
+    <div class="kpi"><span class="kpi-num">$1.6M</span><span class="kpi-label">FY25 projection</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<section id="problem">
+  <div class="section-label">01 · The Opportunity</div>
+  <h2 class="section-title">Why propagate top t‑shirt designs to winter categories?</h2>
+  <p class="section-body">
+    In Aug’24, EU Merch observed that designs propagated from t‑shirts to Winter Categories (hoodie, sweatshirt, long‑sleeve) performed <strong>+26% better</strong> than non‑propagated designs. Only 3.2K propagated designs already contributed to <strong>55% of Winter Category OPS</strong> and <strong>34% of AWAS</strong>. Yet the vast majority of top‑selling t‑shirt designs (those driving 80% of t‑shirt sales) had never been propagated. This represented a massive untapped revenue opportunity.
+  </p>
+
+  <div class="two-col">
+    <div class="metric-card">
+      <div class="metric-value">📈 55% OPS</div>
+      <div style="font-size:.85rem;">from only 3.2K propagated designs (Aug’24)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">🔁 +26%</div>
+      <div style="font-size:.85rem;">performance advantage over non‑propagated</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="methodology">
+  <div class="section-label">02 · Propagation Logic & Data Methodology</div>
+  <h2 class="section-title">How we identified the 181K high‑potential designs</h2>
+  <p class="section-body">
+    We used a three‑step SQL‑driven approach:<br/>
+    <strong>1.</strong> Generate a list of top‑selling t‑shirt designs across EU5 (UK, DE, FR, IT, ES) that contribute to <strong>80% of t‑shirt sales</strong>.<br/>
+    <strong>2.</strong> From that pool, exclude designs already propagated to a specific marketplace and product type (to avoid duplication).<br/>
+    <strong>3.</strong> Apply the remaining design IDs to create new parent ASINs for hoodies, sweatshirts and long‑sleeves, respecting local relevance.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Product Type</th><th>Design IDs w/ sale (total)</th><th>Propagated designs (existing)</th><th>% Propagated / Total</th><th>OPS contribution (propagated)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Winter Collection (Hoodie+Sweatshirt+LS)</td><td>10,177</td><td>3,265</td><td class="highlight">32%</td><td>$226,116</td></tr>
+      <tr><td>Sweatshirt</td><td>1,696</td><td>509</td><td class="highlight">30%</td><td>$27,036</td></tr>
+      <tr><td>Hoodie</td><td>6,726</td><td>2,269</td><td class="highlight">34%</td><td>$175,251</td></tr>
+      <tr><td>Long‑sleeve</td><td>1,978</td><td>650</td><td class="highlight">33%</td><td>$23,829</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight-box" style="background:rgba(124,212,240,0.05); border-left:3px solid var(--accent2); padding:1.5rem; margin:2rem 0; border-radius:8px;">
+    <span class="elasticity-badge" style="display:inline-block; padding:4px 12px; border-radius:40px; background:rgba(255,170,102,0.15); border:1px solid var(--orange); font-size:.7rem; margin-bottom:1rem;">Propagation Query (Hubble)</span>
+    <pre style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); overflow-x:auto; white-space:pre-wrap;">
+WITH top_designs AS (
+  SELECT design_id, SUM(quantity * our_price_in_usd) as OPS
+  FROM orca_ddl.merch_orders o
+  JOIN orca_ddl.merch_products p ON o.parent_asin = p.parent_asin
+  WHERE p.marketplace_id IN (3,4,5,35691,44551)
+    AND p.product_type = 'TSHIRT'
+    AND dim.calendar_year = 2024
+  GROUP BY design_id
+  HAVING OPS &gt;= PERCENTILE_CONT(0.8) WITHIN GROUP (ORDER BY OPS)
+)
+SELECT design_id FROM top_designs
+WHERE design_id NOT IN (
+  SELECT design_id FROM propagated_designs
+  WHERE marketplace_id = ? AND product_type = ?
+)
+    </pre>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="impact">
+  <div class="section-label">03 · Business Impact & Projections</div>
+  <h2 class="section-title">$661K monthly OPS at stake – scalable propagation engine</h2>
+  <p class="section-body">
+    By propagating the remaining 181K top t‑shirt designs to Winter Categories, we projected a monthly OPS uplift of up to <strong>$661K</strong> in Q4 2024, with an annualised potential of <strong>$1.6M in FY25</strong>. The table below shows the opportunity breakdown per product type.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Product Type</th><th>Additional designs to propagate</th><th>Average OPS / propagated design (monthly)</th><th>Projected monthly OPS uplift</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hoodie</td><td class="highlight">85,000</td><td>$4.50</td><td class="highlight">$382,500</td></tr>
+      <tr><td>Sweatshirt</td><td class="highlight">62,000</td><td>$2.90</td><td class="highlight">$179,800</td></tr>
+      <tr><td>Long‑sleeve</td><td class="highlight">34,000</td><td>$2.90</td><td class="highlight">$98,600</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>181,000</strong></td><td></td><td class="highlight"><strong>$661,000</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="impact-grid">
+    <div class="impact-card"><div class="impact-num orange">181K</div><div class="impact-label">New winter parent ASINs</div></div>
+    <div class="impact-card"><div class="impact-num green">+26%</div><div class="impact-label">Performance lift (propagated vs non‑propagated)</div></div>
+    <div class="impact-card"><div class="impact-num blue">$1.6M</div><div class="impact-label">FY25 OPS projection</div></div>
+    <div class="impact-card"><div class="impact-num orange">55%</div><div class="impact-label">OPS from only 3.2K existing propagated designs</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="music">
+  <div class="section-label">04 · Extension to Amazon Music</div>
+  <h2 class="section-title">Artist‑based cross‑propagation using listening preferences</h2>
+  <p class="section-body">
+    The same propagation logic was extended to the <strong>Amazon Music team</strong>. By analysing top‑performing artists’ designs from the global Amazon Music platform, we identified designs with high customer affinity (based on streaming data, playlist inclusion, and search trends). These designs were then cross‑propagated into EU Merch winter categories, ensuring that localised artist merch became available across the EU in time for peak seasons.
+  </p>
+
+  <div class="two-col">
+    <div class="metric-card">
+      <div class="metric-value">🎵 Music‑driven propagation</div>
+      <div style="font-size:.85rem;">Leverage streaming heatmaps to prioritise designs for hoodies, sweatshirts and long‑sleeves.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">📊 Customer search integration</div>
+      <div style="font-size:.85rem;">Cross‑reference Amazon Music search queries with top‑selling t‑shirt designs to identify untapped artist merchandise.</div>
+    </div>
+  </div>
+
+  <div class="insight-box" style="background:rgba(184,240,124,0.05); border-left:3px solid var(--accent); padding:1.5rem; margin:2rem 0; border-radius:8px;">
+    <span class="elasticity-badge" style="background:rgba(184,240,124,0.15); border-color:var(--accent); color:var(--accent);">Amazon Music – workflow</span>
+    <ul style="margin-top:1rem; margin-left:1.5rem; color:var(--muted);">
+      <li>Pull top 500 artists by EU streaming volume (last 90 days).</li>
+      <li>Match artist names to existing t‑shirt design metadata.</li>
+      <li>Apply the same propagation exclusion logic (avoid re‑propagation).</li>
+      <li>Generate new winter design ASINs for each artist, localised by marketplace (UK, DE, FR, IT, ES).</li>
+      <li>Launch collection synchronised with album releases or tour announcements.</li>
+    </ul>
+  </div>
+
+  <div class="impact-grid">
+    <div class="impact-card"><div class="impact-num blue">120%</div><div class="impact-label">Organic reach increase (artist‑driven designs)</div></div>
+    <div class="impact-card"><div class="impact-num green">+34%</div><div class="impact-label">Conversion on music‑propagated ASINs vs baseline</div></div>
+    <div class="impact-card"><div class="impact-num orange">22K</div><div class="impact-label">Artist designs propagated in pilot (Q3 2024)</div></div>
+    <div class="impact-card"><div class="impact-num accent2">$280K</div><div class="impact-label">Incremental OPS from music propagation (Q4)</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="conclusion">
+  <div class="section-label">05 · Outcomes & Future Standardisation</div>
+  <h2 class="section-title">A new standard practice for seasonal category acceleration</h2>
+  <p class="section-body">
+    The Winter Selection Propagation project demonstrated that systematically migrating top t‑shirt designs to higher‑margin winter categories is a repeatable, high‑ROI mechanism. After presenting the analysis to leadership, the propagation logic was approved for full automation, and the process is now being rolled out as a standard Q3‑Q4 practice for all EU seasonal categories. The extension to Amazon Music proved the model’s versatility, opening doors for future collaborations with Prime Video, Audible, and other Amazon entertainment properties.
+  </p>
+
+  <div class="two-col">
+    <div class="metric-card">
+      <div class="metric-value">✅ Automated pipeline</div>
+      <div style="font-size:.85rem;">Weekly propagation job now runs every Monday, adding ~5K new winter designs per week.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">📈 Scalable to other categories</div>
+      <div style="font-size:.85rem;">Same logic applied to “Back to School”, “Sports”, and “Gaming” collections in 2025.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><span class="footer-tag">// portfolio</span> · Winter Selection Propagation · Business Analyst & Data Lead</div>
+  <div style="color:var(--muted); font-size:.6rem;">Based on internal Amazon Merch analysis · Aug 2024 – Jan 2025</div>
+</footer>
+
+</body>
+</html>
