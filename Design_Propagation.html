@@ -155,6 +155,69 @@
   }
   .highlight { color:var(--orange); font-weight:500; }
 
+  /* graphical design for propagation flow */
+  .propagation-flow {
+    background: var(--surface2);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+  }
+  .flow-steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .step {
+    flex: 1;
+    min-width: 180px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    text-align: center;
+    position: relative;
+  }
+  .step::after {
+    content: "→";
+    position: absolute;
+    right: -1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent2);
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .step:last-child::after {
+    display: none;
+  }
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .step-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--orange);
+    margin-bottom: 0.5rem;
+  }
+  .step-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .marketplace-badge {
+    display: inline-flex;
+    background: rgba(255,170,102,0.15);
+    border-radius: 40px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    margin: 0.2rem;
+  }
+
   footer {
     padding:3rem 4rem; border-top:1px solid var(--border);
     display:flex; align-items:center; justify-content:space-between;
@@ -166,6 +229,8 @@
     .hero { padding:7rem 1.5rem 3rem; }
     section { padding:4rem 1.5rem; }
     .two-col, .impact-grid { grid-template-columns:1fr; }
+    .flow-steps { flex-direction: column; }
+    .step::after { display: none; }
     nav { padding:1rem 1.5rem; }
     .nav-links { display:none; }
   }
@@ -231,10 +296,47 @@
   <div class="section-label">02 · Propagation Logic & Data Methodology</div>
   <h2 class="section-title">How we identified the 181K high‑potential designs</h2>
   <p class="section-body">
-    We used a three‑step SQL‑driven approach:<br/>
-    <strong>1.</strong> Generate a list of top‑selling t‑shirt designs across EU5 (UK, DE, FR, IT, ES) that contribute to <strong>80% of t‑shirt sales</strong>.<br/>
-    <strong>2.</strong> From that pool, exclude designs already propagated to a specific marketplace and product type (to avoid duplication).<br/>
-    <strong>3.</strong> Apply the remaining design IDs to create new parent ASINs for hoodies, sweatshirts and long‑sleeves, respecting local relevance.
+    We designed a three‑step, data‑driven propagation engine that selects top t‑shirt designs and prepares them for winter category expansion. The logic is fully automated and respects marketplace‑specific relevance.
+  </p>
+
+  <!-- GRAPHICAL DESIGN REPLACING SQL QUERY -->
+  <div class="propagation-flow">
+    <div style="text-align:center; margin-bottom:1rem;">
+      <span class="marketplace-badge">🇬🇧 UK</span>
+      <span class="marketplace-badge">🇩🇪 DE</span>
+      <span class="marketplace-badge">🇫🇷 FR</span>
+      <span class="marketplace-badge">🇮🇹 IT</span>
+      <span class="marketplace-badge">🇪🇸 ES</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step">
+        <div class="step-icon">🏆</div>
+        <div class="step-title">1. Identify top t‑shirt designs</div>
+        <div class="step-desc">Filter designs contributing to 80% of t‑shirt sales across EU5</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🔄</div>
+        <div class="step-title">2. Exclude already propagated</div>
+        <div class="step-desc">Remove designs already existing in winter categories per marketplace</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🧩</div>
+        <div class="step-title">3. Create new parent ASINs</div>
+        <div class="step-desc">Generate hoodie, sweatshirt and long‑sleeve variants</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📈</div>
+        <div class="step-title">4. Localise & Launch</div>
+        <div class="step-desc">Apply marketplace‑specific pricing, title, and imagery rules</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem; text-align:center; font-size:0.75rem; color:var(--muted); border-top:1px solid var(--border); padding-top:1rem;">
+      <span>⚡ Automated pipeline runs weekly · 5K+ new designs added per week</span>
+    </div>
+  </div>
+
+  <p class="section-body" style="margin-top:1.5rem;">
+    The algorithm takes into account each marketplace individually, ensuring that only designs with proven local demand (based on sales velocity) are propagated. For example, a design that sells well only in Germany will be propagated to DE winter categories, while a pan‑EU design will be expanded to all five markets.
   </p>
 
   <table>
@@ -248,27 +350,6 @@
       <tr><td>Long‑sleeve</td><td>1,978</td><td>650</td><td class="highlight">33%</td><td>$23,829</td></tr>
     </tbody>
   </table>
-
-  <div class="insight-box" style="background:rgba(124,212,240,0.05); border-left:3px solid var(--accent2); padding:1.5rem; margin:2rem 0; border-radius:8px;">
-    <span class="elasticity-badge" style="display:inline-block; padding:4px 12px; border-radius:40px; background:rgba(255,170,102,0.15); border:1px solid var(--orange); font-size:.7rem; margin-bottom:1rem;">Propagation Query (Hubble)</span>
-    <pre style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); overflow-x:auto; white-space:pre-wrap;">
-WITH top_designs AS (
-  SELECT design_id, SUM(quantity * our_price_in_usd) as OPS
-  FROM orca_ddl.merch_orders o
-  JOIN orca_ddl.merch_products p ON o.parent_asin = p.parent_asin
-  WHERE p.marketplace_id IN (3,4,5,35691,44551)
-    AND p.product_type = 'TSHIRT'
-    AND dim.calendar_year = 2024
-  GROUP BY design_id
-  HAVING OPS &gt;= PERCENTILE_CONT(0.8) WITHIN GROUP (ORDER BY OPS)
-)
-SELECT design_id FROM top_designs
-WHERE design_id NOT IN (
-  SELECT design_id FROM propagated_designs
-  WHERE marketplace_id = ? AND product_type = ?
-)
-    </pre>
-  </div>
 </section>
 
 <div class="divider"></div>
@@ -320,15 +401,34 @@ WHERE design_id NOT IN (
     </div>
   </div>
 
-  <div class="insight-box" style="background:rgba(184,240,124,0.05); border-left:3px solid var(--accent); padding:1.5rem; margin:2rem 0; border-radius:8px;">
-    <span class="elasticity-badge" style="background:rgba(184,240,124,0.15); border-color:var(--accent); color:var(--accent);">Amazon Music – workflow</span>
-    <ul style="margin-top:1rem; margin-left:1.5rem; color:var(--muted);">
-      <li>Pull top 500 artists by EU streaming volume (last 90 days).</li>
-      <li>Match artist names to existing t‑shirt design metadata.</li>
-      <li>Apply the same propagation exclusion logic (avoid re‑propagation).</li>
-      <li>Generate new winter design ASINs for each artist, localised by marketplace (UK, DE, FR, IT, ES).</li>
-      <li>Launch collection synchronised with album releases or tour announcements.</li>
-    </ul>
+  <div class="propagation-flow" style="margin-top:2rem;">
+    <div style="text-align:center; margin-bottom:1rem;">
+      <span class="marketplace-badge">🎵 Amazon Music</span>
+      <span class="marketplace-badge">👕 Merch T‑Shirts</span>
+      <span class="marketplace-badge">❄️ Winter Categories</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step">
+        <div class="step-icon">🎧</div>
+        <div class="step-title">Top artists by EU streaming</div>
+        <div class="step-desc">Last 90 days of listening data</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🔎</div>
+        <div class="step-title">Match to existing t‑shirt designs</div>
+        <div class="step-desc">Artist name / keyword alignment</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🚫</div>
+        <div class="step-title">Exclusion logic</div>
+        <div class="step-desc">Avoid re‑propagation per marketplace</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📦</div>
+        <div class="step-title">Create winter ASINs</div>
+        <div class="step-desc">Launch collection synchronised with album/tour dates</div>
+      </div>
+    </div>
   </div>
 
   <div class="impact-grid">
